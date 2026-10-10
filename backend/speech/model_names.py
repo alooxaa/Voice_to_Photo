@@ -8,3 +8,7 @@ MODEL_NAMES = {
     "ru": "vosk-model-small-ru-0.22",
     "en": "vosk-model-small-en-us-0.15",
 }
+
+# Optional bigger models for free speech (the AI studio with AI_TRANSCRIBE_WITH=vosk).
+# They cannot use a grammar, so for commands the small models above work better.
+FREE_SPEECH_MODELS = {"kk": "vosk-model-kz-0.42"}

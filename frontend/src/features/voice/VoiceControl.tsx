@@ -10,10 +10,19 @@ interface VoiceControlProps {
   disabled: boolean;
   onToggle: () => void;
   layout: 'stacked' | 'inline';
+  /** The waiting hint; the AI studio asks for an idea instead of a command. */
+  idleText?: string;
 }
 
 /** The microphone with a plain-language status line next to it. */
-export function VoiceControl({ status, heard, disabled, onToggle, layout }: VoiceControlProps) {
+export function VoiceControl({
+  status,
+  heard,
+  disabled,
+  onToggle,
+  layout,
+  idleText,
+}: VoiceControlProps) {
   const { t } = useTranslation();
   const listening = status === 'listening';
   const unavailable = status === 'unsupported';
@@ -28,7 +37,7 @@ export function VoiceControl({ status, heard, disabled, onToggle, layout }: Voic
         compact={layout === 'inline'}
       />
       <p className={styles.status} role="status" aria-live="polite">
-        {t(`voice.${status}`, { text: heard })}
+        {status === 'idle' && idleText ? idleText : t(`voice.${status}`, { text: heard })}
       </p>
     </div>
   );

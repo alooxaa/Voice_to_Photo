@@ -85,3 +85,17 @@ def match_intensity(text: str, lang: str) -> str | None:
         if any(f" {normalize(word)} " in words for word in INTENSITY[lang][level]):
             return level
     return None
+
+
+def exact_command(text: str, lang: str) -> str | None:
+    """The command when the text is nothing but one of its phrases (plus "a little"/"a lot").
+
+    The AI studio uses this stricter test: "make the sky darker" must go to the
+    AI, while "make it darker" alone is a simple local edit.
+    """
+    words = [word for word in normalize(text).split() if word not in _modifier_words(lang)]
+    spoken = " ".join(words)
+    for command_id, phrases in PHRASES[lang].items():
+        if any(normalize(phrase) == spoken for phrase in phrases):
+            return command_id
+    return None

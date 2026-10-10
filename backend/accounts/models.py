@@ -26,6 +26,8 @@ class Profile(models.Model):
     avatar_color = models.CharField(
         max_length=8, choices=AvatarColor.choices, default=AvatarColor.BLUE
     )
+    # A grown-up has read that the AI studio sends photos to an external service.
+    ai_notice_accepted = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.display_name

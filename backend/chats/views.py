@@ -26,7 +26,8 @@ class MessageListView(APIView):
 
     def get(self, request, photo_id: int):
         photo = own_photo(request, photo_id)
-        return Response(ChatMessageSerializer(photo.messages.all(), many=True).data)
+        messages = photo.messages.select_related("result")
+        return Response(ChatMessageSerializer(messages, many=True).data)
 
     @transaction.atomic
     def post(self, request, photo_id: int):
@@ -40,6 +41,7 @@ class MessageListView(APIView):
             command=data["command"],
             state=assistant.LessonState(progress.current_step, progress.finished),
             heard=data["text"],
+            teaching=data["source"] != "ai",
         )
 
         created = [

@@ -4,6 +4,11 @@ import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
+import { AiStudio } from '../features/ai/AiStudio';
+import { AI_LESSON_STEPS, IDEA_FOR_STEP } from '../features/ai/ideas';
+import { ModeSwitch, type EditorMode } from '../features/ai/ModeSwitch';
+import { useAiStudio } from '../features/ai/useAiStudio';
+import { useAuth } from '../features/auth/store';
 import { ChatPanel } from '../features/chat/ChatPanel';
 import type { ChildRequest } from '../features/chat/api';
 import { messageText } from '../features/chat/messageText';
@@ -20,9 +25,10 @@ import { TaskCard } from '../features/lesson/TaskCard';
 import { usePhotoSession } from '../features/lesson/usePhotoSession';
 import { latestImage, photosApi } from '../features/photos/api';
 import { photoTitle } from '../features/photos/title';
-import type { Recognition } from '../features/voice/recognize';
+import { matchCommand, matchIntensity } from '../features/voice/matchCommand';
+import { recognizeSpeech } from '../features/voice/recognize';
 import { speak } from '../features/voice/speak';
-import { useVoice } from '../features/voice/useVoice';
+import { useVoice, type ProcessRecording } from '../features/voice/useVoice';
 import { VoiceControl } from '../features/voice/VoiceControl';
 import { ApiError } from '../shared/api/client';
 import { currentLanguage } from '../shared/i18n';
@@ -39,11 +45,14 @@ export function EditorPage() {
   const photoId = Number(useParams().id);
   const session = usePhotoSession(photoId);
   const { photo, messages, progress } = session;
+  const noticeAccepted = useAuth((state) => state.profile?.ai_notice_accepted ?? false);
+  const updateProfile = useAuth((state) => state.updateProfile);
 
   // `photo` is fetched once per visit (saving does not replace it), so the
   // picture is loaded once and the undo history survives every save.
   const editor = useEditor(photo ? latestImage(photo) : null, photo?.original_url ?? null);
 
+  const [mode, setMode] = useState<EditorMode>('edit');
   const [busy, setBusy] = useState(false);
   // Shown over the photo while a slower change (background removal) is being made.
   const [working, setWorking] = useState(false);
@@ -51,6 +60,16 @@ export function EditorPage() {
   const [problem, setProblem] = useState<Problem | null>(null);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [showFinish, setShowFinish] = useState(false);
+
+  const ai = useAiStudio({
+    photoId,
+    frame: editor.frame,
+    messages,
+    record: session.record,
+    updateResult: session.updateResult,
+    onLocalCommand: (request) => void handleRequest(request),
+    onKeepEdit: (bitmap) => editor.replace(bitmap, 'ai'),
+  });
 
   // Free the memory of an old download link when a newer one replaces it.
   useEffect(() => {
@@ -89,7 +108,7 @@ export function EditorPage() {
     }
   }
 
-  /** Voice, tiles and the finish view all end up here. */
+  /** Voice, tiles, the finish view and simple requests in the AI studio all end up here. */
   async function handleRequest(request: ChildRequest, intensity: Intensity | null = null) {
     if (busy) return;
     setBusy(true);
@@ -109,9 +128,17 @@ export function EditorPage() {
     }
   }
 
-  const voice = useVoice(({ text, command, intensity }: Recognition) =>
-    handleRequest({ text, command }, intensity),
-  );
+  /** The microphone in Edit mode: Vosk with the command grammar. */
+  const recogniseCommand: ProcessRecording = async (wav, language) => {
+    const result = await recognizeSpeech(wav, language);
+    const command = result.command ?? matchCommand(result.text, language);
+    const intensity = result.intensity ?? matchIntensity(result.text, language);
+    void handleRequest({ text: result.text, command }, intensity);
+    return { heard: result.text, understood: command !== null };
+  };
+
+  const aiOpen = Boolean(ai.status?.ready) && noticeAccepted;
+  const voice = useVoice(mode === 'ai' ? ai.processVoice : recogniseCommand);
 
   function pressTile(command: CommandId) {
     voice.reset();
@@ -136,17 +163,28 @@ export function EditorPage() {
     );
   }
 
+  const frame = editor.frame;
   const title = photoTitle(photo, t);
   const chatOpen = messages.length > 0;
   const lessonCommand = progress.finished ? null : LESSON_STEPS[progress.current_step];
+  const aiStep = progress.ai_finished ? null : AI_LESSON_STEPS[progress.ai_step];
+  const micBlocked = busy || ai.waiting || (mode === 'ai' && !aiOpen);
+
   const voiceControl = (
     <VoiceControl
       status={voice.status}
       heard={voice.heard}
-      disabled={busy}
+      disabled={micBlocked}
       onToggle={() => void voice.toggle()}
       layout={chatOpen ? 'inline' : 'stacked'}
+      idleText={mode === 'ai' ? t('ai.idle') : undefined}
     />
+  );
+  const photoCard = (note: string | null) => (
+    <motion.div layout="position" className={styles.photo} aria-busy={note !== null}>
+      <PhotoCanvas frame={frame} label={t('editor.photoAlt', { title })} />
+      {note && <WorkingNote text={note} />}
+    </motion.div>
   );
   const download = downloadUrl && (
     <ButtonAnchor
@@ -159,6 +197,16 @@ export function EditorPage() {
     </ButtonAnchor>
   );
 
+  const task =
+    mode === 'edit'
+      ? lessonCommand && (
+          <TaskCard
+            step={progress.current_step}
+            task={t('lesson.task', { label: t(`commands.${lessonCommand}.label`) })}
+          />
+        )
+      : aiOpen && aiStep && <TaskCard step={progress.ai_step} task={t(`ai.lesson.${aiStep}`)} />;
+
   return (
     <div className={styles.page}>
       <header className={styles.top}>
@@ -166,7 +214,20 @@ export function EditorPage() {
           {t('nav.backToPhotos')}
         </ButtonLink>
         <h1 className={styles.title}>{title}</h1>
-        <StepBar step={progress.current_step} finished={progress.finished} />
+        <ModeSwitch mode={mode} onChange={setMode} />
+        {mode === 'edit' ? (
+          <StepBar
+            labels={LESSON_STEPS.map((command) => t(`commands.${command}.label`))}
+            step={progress.current_step}
+            finished={progress.finished}
+          />
+        ) : (
+          <StepBar
+            labels={AI_LESSON_STEPS.map((step) => t(`ai.lessonSteps.${step}`))}
+            step={progress.ai_step}
+            finished={progress.ai_finished}
+          />
+        )}
         <Button
           variant="secondary"
           className={styles.help}
@@ -181,26 +242,42 @@ export function EditorPage() {
       <LayoutGroup>
         <div className={chatOpen ? `${styles.workspace} ${styles.withChat}` : styles.workspace}>
           <motion.section layout transition={layoutTransition} className={styles.stage}>
-            {showFinish ? (
+            {mode === 'ai' ? (
+              <AiStudio
+                status={ai.status}
+                noticeAccepted={noticeAccepted}
+                photo={photoCard(ai.waiting ? t('ai.working') : null)}
+                frame={frame}
+                pending={ai.pending}
+                problem={ai.problem}
+                newPhoto={ai.newPhoto}
+                currentIdea={aiStep && IDEA_FOR_STEP[aiStep]}
+                disabled={busy || ai.waiting}
+                onIdea={(idea) => {
+                  voice.reset();
+                  void ai.ask({ idea });
+                }}
+                onDecide={(keep) => void ai.decide(keep)}
+                onAcceptNotice={() => void updateProfile({ ai_notice_accepted: true })}
+                onSwitchToEdit={() => setMode('edit')}
+              />
+            ) : showFinish ? (
               <div className={styles.finish}>
                 <FinishView
                   originalUrl={photo.original_url}
-                  frame={editor.frame}
+                  frame={frame}
                   busy={busy}
                   onSave={() => pressTile('save')}
                   onContinue={() => setShowFinish(false)}
                 />
               </div>
             ) : (
-              <motion.div layout="position" className={styles.photo} aria-busy={working}>
-                <PhotoCanvas frame={editor.frame} label={t('editor.photoAlt', { title })} />
-                {working && <WorkingNote text={t('editor.working')} />}
-              </motion.div>
+              photoCard(working ? t('editor.working') : null)
             )}
 
             {problem && <Notice>{t(`errors.${problem}`)}</Notice>}
 
-            {!showFinish && (
+            {mode === 'edit' && !showFinish && (
               <motion.div layout="position" className={styles.tools}>
                 <CommandTiles
                   current={lessonCommand}
@@ -237,9 +314,7 @@ export function EditorPage() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2, ease: 'easeOut' }}
                 >
-                  {lessonCommand && (
-                    <TaskCard command={lessonCommand} step={progress.current_step} />
-                  )}
+                  {task}
                   {voiceControl}
                 </motion.div>
               )}

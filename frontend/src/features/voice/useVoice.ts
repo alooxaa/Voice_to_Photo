@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { currentLanguage } from '../../shared/i18n';
-import { matchCommand, matchIntensity } from './matchCommand';
-import { recognizeSpeech, type Recognition } from './recognize';
+import { currentLanguage, type Language } from '../../shared/i18n';
 import { MicBlockedError, MicUnsupportedError, startRecording, type Recording } from './recorder';
 import { stopSpeaking } from './speak';
 
@@ -17,19 +15,32 @@ export type VoiceStatus =
   | 'offline'
   | 'unsupported';
 
+/** What became of a recording: the words heard and whether they were understood. */
+export interface VoiceOutcome {
+  heard: string;
+  understood: boolean;
+}
+
+/**
+ * What to do with a recording. The editor sends it to Vosk for a command; the
+ * AI studio sends it to the AI. Null means the caller already showed what
+ * happened (for example a calm notice), so the status goes back to idle.
+ */
+export type ProcessRecording = (wav: Blob, language: Language) => Promise<VoiceOutcome | null>;
+
 /**
  * Microphone state machine: idle → listening → processing → heard/unclear.
  * `toggle` is the only action: the first press starts, a second press stops.
  */
-export function useVoice(onResult: (result: Recognition) => void) {
+export function useVoice(process: ProcessRecording) {
   const [status, setStatus] = useState<VoiceStatus>('idle');
   const [heard, setHeard] = useState('');
   const recording = useRef<Recording | null>(null);
-  const resultHandler = useRef(onResult);
+  const processor = useRef(process);
 
   useEffect(() => {
-    resultHandler.current = onResult;
-  }, [onResult]);
+    processor.current = process;
+  }, [process]);
 
   // Release the microphone when the page closes mid-recording.
   useEffect(() => () => recording.current?.stop(), []);
@@ -49,13 +60,10 @@ export function useVoice(onResult: (result: Recognition) => void) {
       if (!wav) return setStatus('noSpeech');
 
       setStatus('processing');
-      const language = currentLanguage();
-      const result = await recognizeSpeech(wav, language);
-      const command = result.command ?? matchCommand(result.text, language);
-      const intensity = result.intensity ?? matchIntensity(result.text, language);
-      setHeard(result.text);
-      setStatus(command ? 'heard' : 'unclear');
-      resultHandler.current({ text: result.text, command, intensity });
+      const outcome = await processor.current(wav, currentLanguage());
+      if (!outcome) return setStatus('idle');
+      setHeard(outcome.heard);
+      setStatus(outcome.understood ? 'heard' : 'unclear');
     } catch (error) {
       recording.current = null;
       if (error instanceof MicBlockedError) setStatus('micBlocked');

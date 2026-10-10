@@ -16,7 +16,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ["username", "display_name", "language", "avatar_color"]
+        fields = ["username", "display_name", "language", "avatar_color", "ai_notice_accepted"]
 
 
 class RegisterSerializer(serializers.Serializer):

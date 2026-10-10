@@ -8,6 +8,7 @@ Run from the project root:
 Models that are already unpacked are skipped, so the script is safe to re-run.
 """
 
+import argparse
 import os
 import sys
 import urllib.request
@@ -19,7 +20,10 @@ from dotenv import load_dotenv
 BACKEND_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(BACKEND_DIR))
 
-from speech.model_names import MODEL_NAMES  # noqa: E402  (needs the path above)
+from speech.model_names import (  # noqa: E402  (needs the path above)
+    FREE_SPEECH_MODELS,
+    MODEL_NAMES,
+)
 
 BASE_URL = "https://alphacephei.com/vosk/models/"
 
@@ -74,12 +78,21 @@ def download_background_model(name: str, target: Path) -> None:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--large-kk",
+        action="store_true",
+        help="also download the large Kazakh model (1.4 GB) for free speech without a key",
+    )
+    options = parser.parse_args()
     load_dotenv(BACKEND_DIR.parent / ".env")
     target = Path(os.getenv("VOSK_MODELS_DIR") or BACKEND_DIR / "models_stt")
     target.mkdir(parents=True, exist_ok=True)
     print(f"Models folder: {target}")
     for name in MODEL_NAMES.values():
         download_model(name, target)
+    if options.large_kk:
+        download_model(FREE_SPEECH_MODELS["kk"], target)
 
     ai_target = Path(os.getenv("REMBG_MODELS_DIR") or BACKEND_DIR / "models_ai")
     ai_target.mkdir(parents=True, exist_ok=True)

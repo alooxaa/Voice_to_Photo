@@ -13,11 +13,11 @@ from .vocabulary import (
     ADJUSTABLE,
     CHOICE_PHRASES,
     COMMAND_IDS,
+    ENTRIES,
     GROUP_OF,
     GROUPS,
     LANGUAGES,
     PHRASES,
-    _data,
 )
 
 
@@ -39,7 +39,7 @@ class VocabularyTests(SimpleTestCase):
         for command in COMMAND_IDS:
             self.assertIn(GROUP_OF[command], GROUPS)
             for lang in LANGUAGES:
-                entry = _data["commands"][command][lang]
+                entry = ENTRIES[command][lang]
                 self.assertTrue(entry["label"] and entry["effect"], (command, lang))
                 self.assertTrue(3 <= len(entry["say"]) <= 5, (command, lang))
 

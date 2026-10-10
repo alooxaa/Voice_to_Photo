@@ -26,6 +26,9 @@ ADJUSTABLE: frozenset[str] = frozenset(
 )
 GROUP_OF: dict[str, str] = {command: entry["group"] for command, entry in _data["commands"].items()}
 
+# ENTRIES[command][lang] -> {"label": ..., "effect": ..., "say": [...]}, plus "group".
+ENTRIES: dict[str, dict] = _data["commands"]
+
 # PHRASES[lang][command] -> what a child may say for it.
 PHRASES: dict[str, dict[str, list[str]]] = {
     lang: {command: entry[lang]["say"] for command, entry in _data["commands"].items()}

@@ -15,7 +15,7 @@ from django.conf import settings
 from vosk import KaldiRecognizer, Model, SetLogLevel
 
 from .commands import grammar
-from .model_names import MODEL_NAMES
+from .model_names import FREE_SPEECH_MODELS, MODEL_NAMES
 
 SetLogLevel(-1)
 
@@ -43,14 +43,20 @@ def _vosk_path(path: Path) -> str:
     return buffer.value if length else str(path)
 
 
-def get_model(lang: str) -> Model:
+def get_model(lang: str, free_speech: bool = False) -> Model:
+    """The small model for the language; for free speech a bigger one when it is present."""
+    folder = Path(settings.VOSK_MODELS_DIR)
+    name = MODEL_NAMES[lang]
+    large = FREE_SPEECH_MODELS.get(lang)
+    if free_speech and large and (folder / large).is_dir():
+        name = large
     with _lock:
-        if lang not in _models:
-            path = Path(settings.VOSK_MODELS_DIR) / MODEL_NAMES[lang]
+        if name not in _models:
+            path = folder / name
             if not path.is_dir():
                 raise ModelMissingError(f"Model not found: {path}")
-            _models[lang] = Model(_vosk_path(path))
-        return _models[lang]
+            _models[name] = Model(_vosk_path(path))
+        return _models[name]
 
 
 def recognize(audio: bytes, lang: str, vocabulary: str | None = "commands") -> str:
@@ -74,7 +80,7 @@ def recognize(audio: bytes, lang: str, vocabulary: str | None = "commands") -> s
         phrases = json.dumps(grammar(lang, vocabulary), ensure_ascii=False)
         recognizer = KaldiRecognizer(get_model(lang), sample_rate, phrases)
     else:
-        recognizer = KaldiRecognizer(get_model(lang), sample_rate)
+        recognizer = KaldiRecognizer(get_model(lang, free_speech=True), sample_rate)
     chunk = 8000
     for start in range(0, len(frames), chunk):
         recognizer.AcceptWaveform(frames[start : start + chunk])

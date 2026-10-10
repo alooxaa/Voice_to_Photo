@@ -132,3 +132,24 @@ VOSK_MODELS_DIR = Path(os.getenv("VOSK_MODELS_DIR") or BASE_DIR / "models_stt")
 # Local background removal (rembg). "u2net" is its general-purpose model.
 REMBG_MODELS_DIR = Path(os.getenv("REMBG_MODELS_DIR") or BASE_DIR / "models_ai")
 REMBG_MODEL = os.getenv("REMBG_MODEL", "u2net")
+
+# AI studio. Keys live only here (read from .env), never in the frontend or in Git.
+# Empty provider names mean "the first one that has a key" (see ai/providers).
+AI_TEXT_PROVIDER = os.getenv("AI_TEXT_PROVIDER", "")
+AI_IMAGE_PROVIDER = os.getenv("AI_IMAGE_PROVIDER", "")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
+CLOUDFLARE_ACCOUNT_ID = os.getenv("CLOUDFLARE_ACCOUNT_ID", "")
+CLOUDFLARE_API_TOKEN = os.getenv("CLOUDFLARE_API_TOKEN", "")
+CLOUDFLARE_IMAGE_MODEL = os.getenv(
+    "CLOUDFLARE_IMAGE_MODEL", "@cf/black-forest-labs/flux-2-klein-4b"
+)
+CLOUDFLARE_TEXT_MODEL = os.getenv(
+    "CLOUDFLARE_TEXT_MODEL", "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+)
+CLOUDFLARE_SPEECH_MODEL = os.getenv("CLOUDFLARE_SPEECH_MODEL", "@cf/openai/whisper-large-v3-turbo")
+# "provider": the text provider transcribes free speech (best quality).
+# "vosk": offline Vosk without a grammar (saves quota, clearly less accurate).
+AI_TRANSCRIBE_WITH = os.getenv("AI_TRANSCRIBE_WITH", "provider")
+# AI requests per user per day, so a class demo cannot use up the free quota.
+AI_DAILY_LIMIT = int(os.getenv("AI_DAILY_LIMIT", "30"))

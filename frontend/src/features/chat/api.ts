@@ -1,4 +1,5 @@
 import { api } from '../../shared/api/client';
+import type { AiResult } from '../ai/api';
 import type { CommandId } from '../editor/commands';
 
 /** Values the assistant's reply templates are filled with (see chats/assistant.py). */
@@ -7,31 +8,39 @@ export interface MessageParams {
   heard?: string;
   expected?: CommandId;
   examples?: CommandId[];
+  /** The idea tile the child pressed in the AI studio. */
+  idea?: string;
 }
 
 export interface ChatMessage {
   id: number;
   role: 'child' | 'assistant';
-  kind: 'text' | 'task' | 'praise' | 'retry';
+  kind: 'text' | 'task' | 'praise' | 'retry' | 'result';
   /** Template of an assistant reply; empty for the child's own words. */
   key: string;
   params: MessageParams;
   /** The child's words as heard; empty when speech was caught but not understood. */
   text: string;
   command: CommandId | null;
+  /** A picture made in the AI studio, for "result" messages. */
+  result: AiResult | null;
   created: string;
 }
 
 export interface LessonProgress {
   current_step: number;
   finished: boolean;
+  /** The AI studio's own three-step lesson. */
+  ai_step: number;
+  ai_finished: boolean;
 }
 
 export interface ChildRequest {
   /** What was heard; empty for a tile press or speech that was not understood. */
   text: string;
   command: CommandId | null;
-  source?: 'voice' | 'tile';
+  /** "ai": a simple command the child asked for in the AI studio (no lesson task follows). */
+  source?: 'voice' | 'tile' | 'ai';
 }
 
 export const chatApi = {

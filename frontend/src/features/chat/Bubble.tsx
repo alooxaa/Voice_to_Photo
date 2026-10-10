@@ -44,6 +44,16 @@ export function Bubble({ message }: { message: ChatMessage }) {
     );
   }
 
+  if (message.kind === 'result' && message.result) {
+    return (
+      <figure className={`${styles.bubble} ${styles.assistant} ${styles.result}`}>
+        {author}
+        <img src={message.result.url} alt={t('ai.choice.after')} className={styles.thumb} />
+        <figcaption>{t(`ai.decision.${message.result.decision}`)}</figcaption>
+      </figure>
+    );
+  }
+
   if (message.kind === 'praise') {
     return (
       <div className={`${styles.bubble} ${styles.praise}`}>

@@ -57,13 +57,16 @@ def reply(
     state: LessonState,
     heard: str = "",
     rng: random.Random | None = None,
+    teaching: bool = True,
 ) -> Reply:
+    """`teaching=False` (a simple command asked for in the AI studio) only confirms the
+    change: the editing lesson's tasks belong to Edit mode."""
     rng = rng or random.Random()
 
     if command is None:
         return Reply([_not_understood(state, heard, rng)], state)
 
-    if state.finished:
+    if state.finished or not teaching:
         # Free mode: no tasks, just confirm what happened.
         return Reply([AssistantMessage("text", "effect", {}, command)], state)
 
@@ -93,3 +96,47 @@ def _not_understood(state: LessonState, heard: str, rng: random.Random) -> Assis
 
     key = "retry_heard" if heard else "retry_unclear"
     return AssistantMessage("retry", key, {"heard": heard, "expected": LESSON_STEPS[state.step]})
+
+
+# ---------------------------------------------------------------- AI studio
+
+# The AI studio's short lesson: add something, change the style, remove something.
+AI_LESSON_STEPS = ("add", "style", "remove")
+
+
+@dataclass(frozen=True)
+class AiLessonState:
+    step: int = 0
+    finished: bool = False
+
+
+@dataclass(frozen=True)
+class AiReply:
+    messages: list[AssistantMessage]
+    state: AiLessonState
+
+
+def ai_task_message(step: int) -> AssistantMessage:
+    return AssistantMessage("task", "ai_task", {"step": step})
+
+
+def ai_decision_reply(kept: bool, kind: str, edit_kind: str, state: AiLessonState) -> AiReply:
+    """What the assistant says after the child kept or rejected an AI picture."""
+    if not kept:
+        return AiReply([AssistantMessage("text", "ai_discarded")], state)
+
+    saved = "ai_saved" if kind == "generate" else "ai_kept"
+    if state.finished or edit_kind != AI_LESSON_STEPS[state.step]:
+        return AiReply([AssistantMessage("praise", saved)], state)
+
+    next_step = state.step + 1
+    if next_step == len(AI_LESSON_STEPS):
+        finished = AssistantMessage("praise", "ai_finished")
+        return AiReply(
+            [AssistantMessage("praise", saved), finished],
+            AiLessonState(step=next_step, finished=True),
+        )
+    return AiReply(
+        [AssistantMessage("praise", saved), ai_task_message(next_step)],
+        AiLessonState(step=next_step),
+    )

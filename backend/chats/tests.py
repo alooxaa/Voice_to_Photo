@@ -4,7 +4,14 @@ from django.test import SimpleTestCase
 
 from config.testing import ApiTestCase
 
-from .assistant import LESSON_STEPS, LessonState, reply
+from .assistant import (
+    AI_LESSON_STEPS,
+    LESSON_STEPS,
+    AiLessonState,
+    LessonState,
+    ai_decision_reply,
+    reply,
+)
 
 
 class AssistantTests(SimpleTestCase):
@@ -48,6 +55,11 @@ class AssistantTests(SimpleTestCase):
         self.assertEqual([m.key for m in free.messages], ["effect"])
         self.assertEqual(free.state, state)
 
+    def test_command_from_the_ai_studio_only_confirms(self):
+        answer = reply("darken", LessonState(step=0), teaching=False, rng=self.rng)
+        self.assertEqual([m.key for m in answer.messages], ["effect"])
+        self.assertEqual(answer.state, LessonState(step=0))
+
     def test_free_mode_suggests_examples_instead_of_a_lesson_task(self):
         state = LessonState(step=len(LESSON_STEPS), finished=True)
         for heard in ("banana", ""):
@@ -55,6 +67,25 @@ class AssistantTests(SimpleTestCase):
             self.assertTrue(message.key.startswith("free_retry"))
             self.assertNotIn("expected", message.params)
             self.assertEqual(len(message.params["examples"]), 3)
+
+
+class AiLessonTests(SimpleTestCase):
+    def test_add_style_remove_then_finished(self):
+        state = AiLessonState()
+        for kind in AI_LESSON_STEPS:
+            answer = ai_decision_reply(True, "edit", kind, state)
+            state = answer.state
+        self.assertTrue(state.finished)
+        self.assertEqual(answer.messages[-1].key, "ai_finished")
+
+    def test_other_pictures_are_praised_without_moving_on(self):
+        answer = ai_decision_reply(True, "generate", "other", AiLessonState())
+        self.assertEqual([m.key for m in answer.messages], ["ai_saved"])
+        self.assertEqual(answer.state, AiLessonState())
+
+    def test_rejected_picture(self):
+        answer = ai_decision_reply(False, "edit", "add", AiLessonState())
+        self.assertEqual([m.key for m in answer.messages], ["ai_discarded"])
 
 
 class ChatApiTests(ApiTestCase):
@@ -71,7 +102,7 @@ class ChatApiTests(ApiTestCase):
         self.assertEqual(response.status_code, 201, response.content)
         roles = [m["role"] for m in response.json()["messages"]]
         self.assertEqual(roles, ["child", "assistant", "assistant"])
-        self.assertEqual(response.json()["progress"], {"current_step": 1, "finished": False})
+        self.assertEqual(response.json()["progress"]["current_step"], 1)
 
         history = self.client.get(self.url).json()
         self.assertEqual(len(history), 3)

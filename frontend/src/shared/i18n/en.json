@@ -114,7 +114,8 @@
   "samples": {
     "mountains": "Mountains",
     "sea": "Sea",
-    "city": "City"
+    "city": "City",
+    "space_cat": "Cat in space"
   },
   "assistant": {
     "praise": ["Great job!", "Well done!", "Nice!", "You did it!"],
@@ -140,7 +141,27 @@
     ],
     "finished": "You finished every task! Free mode is on: you can use any command now.",
     "or": "or",
-    "quote": "“{{label}}”"
+    "quote": "“{{label}}”",
+    "ai_edit": [
+      "Here it is! If you like it, say “Keep it”; if not, “Go back”.",
+      "Done! Say “Keep it” if you like it."
+    ],
+    "ai_generate": ["Your new picture is ready! Say “Keep it” if you like it."],
+    "ai_kept": ["Great! We kept the change.", "Lovely! The photo looks like this now."],
+    "ai_saved": ["Great! The new picture is saved in My photos."],
+    "ai_discarded": [
+      "Okay, it's back the way it was. Try another idea.",
+      "Nothing changed. Let's think of something else."
+    ],
+    "ai_finished": "You finished every AI Studio task! Now you can tell me any idea.",
+    "ai_refused": [
+      "I can't draw that one. Let's try another idea, like “Make it snow”.",
+      "That's not something I can make. How about “Add a rainbow”?"
+    ],
+    "ai_unclear": ["I didn't understand the idea. Try saying “Add a rainbow”."],
+    "ai_not_heard": [
+      "I couldn't make out the words. Press the microphone and say your idea slowly."
+    ]
   },
   "groups": {
     "light": "Light",
@@ -156,5 +177,65 @@
     "close": "Close",
     "alsoSay": "Also: {{phrases}}",
     "listen": "Listen to “{{label}}”"
+  },
+  "mode": {
+    "label": "Mode",
+    "edit": "Edit",
+    "ai": "AI Studio"
+  },
+  "ai": {
+    "loading": "Opening the AI Studio…",
+    "toEdit": "Go to Edit mode",
+    "off": {
+      "title": "The AI Studio is not connected yet",
+      "text": "A grown-up sets it up once; the README explains how. Until then, Edit mode works fully."
+    },
+    "notice": {
+      "title": "For grown-ups",
+      "text": "In the AI Studio the photo and the child's words are sent to external services (Google Gemini, Cloudflare) to make pictures. Using the sample photos is best. If you agree, press the button.",
+      "accept": "I understand, continue"
+    },
+    "ideasTitle": "Ideas",
+    "ideas": {
+      "rainbow": "Add a rainbow",
+      "snow": "Make it snow",
+      "cartoon": "Turn it into a cartoon",
+      "no_sun": "Remove the sun",
+      "space_cat": "Draw a cat in space"
+    },
+    "remaining": "AI requests left today: {{n}}",
+    "working": "Drawing…",
+    "idle": "Press the microphone and tell me your idea",
+    "choice": {
+      "titleEdit": "How do you like it?",
+      "titleNew": "Your new picture is ready",
+      "before": "Before",
+      "after": "After",
+      "newPicture": "New picture",
+      "sayHint": "You can also say “Keep it” or “Go back”."
+    },
+    "decision": {
+      "pending": "Waiting for your choice",
+      "kept": "You kept it",
+      "discarded": "You went back"
+    },
+    "problems": {
+      "not_configured": "The AI Studio is not connected yet. Edit mode works already.",
+      "limit": "That's all the AI requests for today. Let's try again tomorrow! You can keep playing in Edit mode.",
+      "unavailable": "The AI is not answering right now. Let's try a bit later; Edit mode still works.",
+      "network": "No internet connection. Edit mode works without it."
+    },
+    "saved": "Your new picture is saved in My photos.",
+    "openNew": "Open the new picture",
+    "lesson": {
+      "add": "Add something to the picture. For example: “Add a rainbow”.",
+      "style": "Change the picture's style. For example: “Turn it into a cartoon”.",
+      "remove": "Take something away. For example: “Remove the sun”."
+    },
+    "lessonSteps": {
+      "add": "Add something",
+      "style": "Change the style",
+      "remove": "Take something away"
+    }
   }
 }

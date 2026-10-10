@@ -9,7 +9,7 @@ urlpatterns = [
     path("api/photos/", include("photos.urls")),
     path("api/photos/<int:photo_id>/", include("chats.urls")),
     path("api/speech/", include("speech.urls")),
-    path("api/ai/", include("ai.urls")),
+    path("api/", include("ai.urls")),
 ]
 
 if settings.DEBUG:

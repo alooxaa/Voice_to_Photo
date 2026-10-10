@@ -14,6 +14,7 @@ class ChatMessage(models.Model):
         TASK = "task", "Task"
         PRAISE = "praise", "Praise"
         RETRY = "retry", "Retry"
+        RESULT = "result", "Result"  # a picture made in the AI studio
 
     photo = models.ForeignKey(Photo, on_delete=models.CASCADE, related_name="messages")
     role = models.CharField(max_length=10, choices=Role.choices)
@@ -26,6 +27,10 @@ class ChatMessage(models.Model):
     params = models.JSONField(default=dict, blank=True)
     # null = the child said something that is not a command (the spec asks for a nullable id).
     command = models.CharField(max_length=20, null=True, blank=True)  # noqa: DJ001
+    # The picture a "result" message shows.
+    result = models.ForeignKey(
+        "ai.AIResult", null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -36,12 +41,14 @@ class ChatMessage(models.Model):
 
 
 class LessonProgress(models.Model):
-    """Where the child is in the six-step lesson for one photo."""
+    """Where the child is in the two lessons for one photo: editing and the AI studio."""
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     photo = models.OneToOneField(Photo, on_delete=models.CASCADE, related_name="progress")
     current_step = models.PositiveSmallIntegerField(default=0)
     finished = models.BooleanField(default=False)
+    ai_step = models.PositiveSmallIntegerField(default=0)
+    ai_finished = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f"{self.photo}: step {self.current_step}"

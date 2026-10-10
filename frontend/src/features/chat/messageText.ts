@@ -1,5 +1,6 @@
 import type { TFunction } from 'i18next';
 
+import { AI_LESSON_STEPS } from '../ai/ideas';
 import type { CommandId } from '../editor/commands';
 import type { ChatMessage } from './api';
 
@@ -15,6 +16,7 @@ export function messageText(message: ChatMessage, t: TFunction): string {
   if (message.role === 'child') {
     // A pressed tile shows its label, so it follows the interface language too.
     if (message.key === 'tile' && message.command) return t(`commands.${message.command}.label`);
+    if (message.key === 'idea' && message.params.idea) return t(`ai.ideas.${message.params.idea}`);
     return message.text || t('chat.notHeard');
   }
   // Replies saved before templates existed only have their original text.
@@ -39,6 +41,8 @@ export function messageText(message: ChatMessage, t: TFunction): string {
   switch (message.key) {
     case 'task':
       return t('lesson.task', { label: label(message.command) });
+    case 'ai_task':
+      return t(`ai.lesson.${AI_LESSON_STEPS[params.step ?? 0]}`);
     case 'praise':
       return `${variant('praise')} ${effect}`;
     case 'effect':

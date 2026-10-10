@@ -8,6 +8,8 @@ export interface Profile {
   display_name: string;
   language: Language;
   avatar_color: AvatarColor;
+  /** A grown-up has read that the AI studio sends photos to an external service. */
+  ai_notice_accepted: boolean;
 }
 
 export interface RegisterData {
