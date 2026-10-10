@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
+import vocabulary from '../../../../shared/commands.json';
 import en from './en.json';
 import kk from './kk.json';
 import ru from './ru.json';
@@ -15,7 +16,17 @@ export const LANGUAGE_NAMES: Record<Language, string> = {
   en: 'English',
 };
 
-export const translations = { kk, ru, en } satisfies Record<Language, typeof kk>;
+const interfaceTexts = { kk, ru, en } satisfies Record<Language, typeof kk>;
+
+/**
+ * Command labels, effect sentences and phrases come from the vocabulary file
+ * shared with the backend; they are reachable as `commands.<id>.label` etc.
+ */
+function vocabularyTexts(language: Language) {
+  const pick = <T extends Record<Language, unknown>>(entries: Record<string, T>) =>
+    Object.fromEntries(Object.entries(entries).map(([id, entry]) => [id, entry[language]]));
+  return { commands: pick(vocabulary.commands), choices: pick(vocabulary.choices) };
+}
 
 const STORAGE_KEY = 'dauys-foto.language';
 
@@ -47,11 +58,12 @@ export function currentLanguage(): Language {
 }
 
 void i18n.use(initReactI18next).init({
-  resources: {
-    kk: { translation: kk },
-    ru: { translation: ru },
-    en: { translation: en },
-  },
+  resources: Object.fromEntries(
+    LANGUAGES.map((language) => [
+      language,
+      { translation: { ...interfaceTexts[language], ...vocabularyTexts(language) } },
+    ]),
+  ),
   lng: storedLanguage(),
   fallbackLng: 'kk',
   interpolation: { escapeValue: false },

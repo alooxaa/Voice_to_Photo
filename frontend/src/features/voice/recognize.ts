@@ -1,10 +1,11 @@
 import { api } from '../../shared/api/client';
 import type { Language } from '../../shared/i18n';
-import type { CommandId } from '../editor/commands';
+import type { CommandId, Intensity } from '../editor/commands';
 
 export interface Recognition {
   text: string;
   command: CommandId | null;
+  intensity: Intensity | null;
 }
 
 /** Send the WAV to the backend, where Vosk turns it into text and a command. */

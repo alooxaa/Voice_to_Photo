@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { currentLanguage } from '../../shared/i18n';
-import { matchCommand } from './matchCommand';
+import { matchCommand, matchIntensity } from './matchCommand';
 import { recognizeSpeech, type Recognition } from './recognize';
 import { MicBlockedError, MicUnsupportedError, startRecording, type Recording } from './recorder';
 import { stopSpeaking } from './speak';
@@ -52,9 +52,10 @@ export function useVoice(onResult: (result: Recognition) => void) {
       const language = currentLanguage();
       const result = await recognizeSpeech(wav, language);
       const command = result.command ?? matchCommand(result.text, language);
+      const intensity = result.intensity ?? matchIntensity(result.text, language);
       setHeard(result.text);
       setStatus(command ? 'heard' : 'unclear');
-      resultHandler.current({ text: result.text, command });
+      resultHandler.current({ text: result.text, command, intensity });
     } catch (error) {
       recording.current = null;
       if (error instanceof MicBlockedError) setStatus('micBlocked');

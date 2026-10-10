@@ -1,0 +1,17 @@
+/* Sits at the bottom of the photo card while a slower change is being made. */
+.note {
+  position: absolute;
+  right: 0;
+  bottom: 28px;
+  left: 0;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 12px 24px;
+  border-radius: var(--radius-button);
+  background: var(--ink);
+  color: var(--surface);
+  font-family: var(--font-serif);
+  font-size: var(--text-card);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}

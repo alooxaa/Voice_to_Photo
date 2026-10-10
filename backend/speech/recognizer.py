@@ -53,8 +53,14 @@ def get_model(lang: str) -> Model:
         return _models[lang]
 
 
-def recognize(audio: bytes, lang: str) -> str:
-    """Return the text heard in a WAV file, limited to the command grammar."""
+def recognize(audio: bytes, lang: str, vocabulary: str | None = "commands") -> str:
+    """Return the text heard in a WAV file.
+
+    With a vocabulary ("commands" or "choice") Vosk only listens for those
+    phrases. With None it transcribes free speech, which is far less accurate
+    with the small models; the AI studio uses it only when no cloud
+    transcription is configured.
+    """
     try:
         with wave.open(io.BytesIO(audio)) as wav:
             if wav.getnchannels() != 1 or wav.getsampwidth() != 2:
@@ -64,9 +70,11 @@ def recognize(audio: bytes, lang: str) -> str:
     except (wave.Error, EOFError) as error:
         raise BadAudioError(str(error)) from error
 
-    recognizer = KaldiRecognizer(
-        get_model(lang), sample_rate, json.dumps(grammar(lang), ensure_ascii=False)
-    )
+    if vocabulary:
+        phrases = json.dumps(grammar(lang, vocabulary), ensure_ascii=False)
+        recognizer = KaldiRecognizer(get_model(lang), sample_rate, phrases)
+    else:
+        recognizer = KaldiRecognizer(get_model(lang), sample_rate)
     chunk = 8000
     for start in range(0, len(frames), chunk):
         recognizer.AcceptWaveform(frames[start : start + chunk])

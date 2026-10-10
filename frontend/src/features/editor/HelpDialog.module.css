@@ -1,0 +1,98 @@
+.dialog {
+  width: min(960px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  padding: var(--pad);
+  border: none;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+/* The page behind is dimmed with the ink colour, not a new one. */
+.dialog::backdrop {
+  background: var(--ink);
+  opacity: 0.6;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 32px;
+}
+
+.lead {
+  margin: 8px 0 20px;
+  color: var(--ink-soft);
+  font-size: var(--text-secondary);
+}
+
+.groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--gap);
+}
+
+.group {
+  margin-bottom: 10px;
+  font-size: var(--text-card);
+}
+
+.list {
+  display: grid;
+  gap: var(--target-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 8px 8px 14px;
+  border-radius: var(--radius-button);
+  background: var(--ground);
+}
+
+.icon {
+  flex: none;
+  width: 26px;
+  height: 26px;
+}
+
+.words {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.label {
+  font-weight: 600;
+}
+
+.others {
+  color: var(--ink-soft);
+  font-size: 16px;
+}
+
+.speak {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--target-min);
+  height: var(--target-min);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-button);
+  background: var(--surface);
+}
+
+.speak svg {
+  width: 26px;
+  height: 26px;
+}

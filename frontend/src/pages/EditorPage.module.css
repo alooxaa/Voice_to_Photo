@@ -18,6 +18,10 @@
   font-size: 32px;
 }
 
+.help {
+  margin-left: auto;
+}
+
 .message {
   display: grid;
   justify-items: start;
@@ -52,6 +56,7 @@
 
 /* The photo is the flexible part: it gets the height the tools leave free. */
 .photo {
+  position: relative;
   display: grid;
   flex: 1;
   place-items: center;
@@ -69,10 +74,7 @@
 }
 
 .tools {
-  display: grid;
   flex: none;
-  justify-items: start;
-  gap: var(--target-gap);
   width: 100%;
 }
 
@@ -98,10 +100,6 @@
  * and the canvas can shrink to fit instead of pushing the tools down.
  */
 @media (min-width: 1024px) {
-  .photo {
-    position: relative;
-  }
-
   .photo > div {
     position: absolute;
     inset: 16px;

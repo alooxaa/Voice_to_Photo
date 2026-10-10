@@ -39,7 +39,9 @@
     "save_failed": "The photo wasn't saved on the server, but you can still download it.",
     "chat_failed": "The chat message didn't go through. The change to the photo is kept.",
     "photo_missing": "This photo couldn't be found.",
-    "generic": "Something went wrong. Please try again."
+    "generic": "Something went wrong. Please try again.",
+    "background_failed": "The background could not be removed. Try another tool.",
+    "model_missing": "The background model has not been downloaded yet. Ask a grown-up to download the models."
   },
   "home": {
     "greeting": "Hi, {{name}}!",
@@ -55,7 +57,11 @@
     "loading": "Opening the photo…",
     "photoAlt": "Photo “{{title}}”",
     "tiles": "Commands",
-    "download": "Download the photo"
+    "download": "Download the photo",
+    "groups": "Tool groups",
+    "taskHere": "the task is here",
+    "help": "Help",
+    "working": "Working on it…"
   },
   "voice": {
     "start": "Start listening",
@@ -105,38 +111,6 @@
       "ink": "Navy"
     }
   },
-  "commands": {
-    "brighten": {
-      "label": "Brighten",
-      "say": ["brighten", "brighter", "make it brighter", "more light", "lighter"],
-      "effect": "The photo is brighter now."
-    },
-    "darken": {
-      "label": "Darken",
-      "say": ["darken", "darker", "make it darker", "less light"],
-      "effect": "The photo is darker now."
-    },
-    "grayscale": {
-      "label": "Black and white",
-      "say": ["black and white", "grayscale", "gray", "no color", "make it gray"],
-      "effect": "The photo is black and white now."
-    },
-    "rotate": {
-      "label": "Rotate",
-      "say": ["rotate", "turn", "turn it", "turn right", "spin"],
-      "effect": "The photo has turned."
-    },
-    "undo": {
-      "label": "Undo",
-      "say": ["undo", "go back", "back", "take it back"],
-      "effect": "The last change is undone."
-    },
-    "save": {
-      "label": "Save",
-      "say": ["save", "save it", "keep it", "save the photo"],
-      "effect": "The photo is saved."
-    }
-  },
   "samples": {
     "mountains": "Mountains",
     "sea": "Sea",
@@ -167,5 +141,20 @@
     "finished": "You finished every task! Free mode is on: you can use any command now.",
     "or": "or",
     "quote": "“{{label}}”"
+  },
+  "groups": {
+    "light": "Light",
+    "colour": "Colour",
+    "shape": "Shape",
+    "effects": "Effects",
+    "smart": "Smart",
+    "control": "Control"
+  },
+  "help": {
+    "title": "What you can say",
+    "lead": "Press the microphone and say one of these words. The speaker button reads a word aloud.",
+    "close": "Close",
+    "alsoSay": "Also: {{phrases}}",
+    "listen": "Listen to “{{label}}”"
   }
 }

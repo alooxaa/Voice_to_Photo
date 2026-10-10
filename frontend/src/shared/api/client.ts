@@ -78,19 +78,19 @@ async function send(path: string, options: RequestOptions): Promise<Response> {
   }
 }
 
+/** Send a request; an expired access token is refreshed once and the request repeated. */
+async function request(path: string, options: RequestOptions): Promise<Response> {
+  const response = await send(path, options);
+  if (response.status !== 401 || options.anonymous) return response;
+  if (await refreshAccessToken()) return send(path, options);
+  tokens.clear();
+  onSessionExpired();
+  return response;
+}
+
 /** Call the backend API. Paths are relative to /api/, e.g. `photos/`. */
 export async function api<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  let response = await send(path, options);
-
-  if (response.status === 401 && !options.anonymous) {
-    if (await refreshAccessToken()) {
-      response = await send(path, options);
-    } else {
-      tokens.clear();
-      onSessionExpired();
-    }
-  }
-
+  const response = await request(path, options);
   const isJson = response.headers.get('content-type')?.includes('application/json') ?? false;
   // A server error without JSON means the Vite proxy could not reach Django.
   if (response.status >= 500 && !isJson) throw new NetworkError();
@@ -98,4 +98,13 @@ export async function api<T>(path: string, options: RequestOptions = {}): Promis
   const data: unknown = isJson ? await response.json() : null;
   if (!response.ok) throw new ApiError(response.status, data);
   return data as T;
+}
+
+/** Like `api`, for endpoints that answer with a file (an image) instead of JSON. */
+export async function apiBlob(path: string, options: RequestOptions = {}): Promise<Blob> {
+  const response = await request(path, options);
+  const isJson = response.headers.get('content-type')?.includes('application/json') ?? false;
+  if (response.ok) return response.blob();
+  if (response.status >= 500 && !isJson) throw new NetworkError();
+  throw new ApiError(response.status, isJson ? await response.json() : null);
 }

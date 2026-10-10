@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowLeft, Download } from 'lucide-react';
+import { ArrowLeft, CircleHelp, Download } from 'lucide-react';
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
@@ -8,9 +8,11 @@ import { ChatPanel } from '../features/chat/ChatPanel';
 import type { ChildRequest } from '../features/chat/api';
 import { messageText } from '../features/chat/messageText';
 import { CommandTiles } from '../features/editor/CommandTiles';
-import type { CommandId } from '../features/editor/commands';
+import type { CommandId, Intensity } from '../features/editor/commands';
+import { HelpDialog } from '../features/editor/HelpDialog';
 import { PhotoCanvas } from '../features/editor/PhotoCanvas';
 import { bitmapToBlob, useEditor } from '../features/editor/useEditor';
+import { WorkingNote } from '../features/editor/WorkingNote';
 import { FinishView } from '../features/lesson/FinishView';
 import { StepBar } from '../features/lesson/StepBar';
 import { LESSON_STEPS } from '../features/lesson/steps';
@@ -18,15 +20,19 @@ import { TaskCard } from '../features/lesson/TaskCard';
 import { usePhotoSession } from '../features/lesson/usePhotoSession';
 import { latestImage, photosApi } from '../features/photos/api';
 import { photoTitle } from '../features/photos/title';
+import type { Recognition } from '../features/voice/recognize';
 import { speak } from '../features/voice/speak';
 import { useVoice } from '../features/voice/useVoice';
 import { VoiceControl } from '../features/voice/VoiceControl';
+import { ApiError } from '../shared/api/client';
 import { currentLanguage } from '../shared/i18n';
-import { ButtonAnchor, ButtonLink } from '../shared/ui/Button';
+import { Button, ButtonAnchor, ButtonLink } from '../shared/ui/Button';
 import { Notice } from '../shared/ui/Notice';
 import styles from './EditorPage.module.css';
 
 const layoutTransition = { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const };
+
+type Problem = 'save_failed' | 'chat_failed' | 'background_failed' | 'model_missing';
 
 export function EditorPage() {
   const { t } = useTranslation();
@@ -36,10 +42,13 @@ export function EditorPage() {
 
   // `photo` is fetched once per visit (saving does not replace it), so the
   // picture is loaded once and the undo history survives every save.
-  const editor = useEditor(photo ? latestImage(photo) : null);
+  const editor = useEditor(photo ? latestImage(photo) : null, photo?.original_url ?? null);
 
   const [busy, setBusy] = useState(false);
-  const [problem, setProblem] = useState<'save_failed' | 'chat_failed' | null>(null);
+  // Shown over the photo while a slower change (background removal) is being made.
+  const [working, setWorking] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [problem, setProblem] = useState<Problem | null>(null);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [showFinish, setShowFinish] = useState(false);
 
@@ -61,14 +70,32 @@ export function EditorPage() {
     }
   }
 
+  /** Change the picture. False when it could not be done; the chat then stays quiet. */
+  async function changePhoto(command: CommandId, intensity: Intensity | null): Promise<boolean> {
+    if (command === 'save') {
+      await savePhoto();
+      return true;
+    }
+    setWorking(command === 'remove_background');
+    try {
+      await editor.apply(command, intensity);
+      return true;
+    } catch (error) {
+      const missing = error instanceof ApiError && error.status === 503;
+      setProblem(missing ? 'model_missing' : 'background_failed');
+      return false;
+    } finally {
+      setWorking(false);
+    }
+  }
+
   /** Voice, tiles and the finish view all end up here. */
-  async function handleRequest(request: ChildRequest) {
+  async function handleRequest(request: ChildRequest, intensity: Intensity | null = null) {
     if (busy) return;
     setBusy(true);
     setProblem(null);
     try {
-      if (request.command === 'save') await savePhoto();
-      else if (request.command) editor.apply(request.command);
+      if (request.command && !(await changePhoto(request.command, intensity))) return;
 
       const wasFinished = progress.finished;
       const reply = await session.send(request);
@@ -82,7 +109,9 @@ export function EditorPage() {
     }
   }
 
-  const voice = useVoice(handleRequest);
+  const voice = useVoice(({ text, command, intensity }: Recognition) =>
+    handleRequest({ text, command }, intensity),
+  );
 
   function pressTile(command: CommandId) {
     voice.reset();
@@ -119,6 +148,16 @@ export function EditorPage() {
       layout={chatOpen ? 'inline' : 'stacked'}
     />
   );
+  const download = downloadUrl && (
+    <ButtonAnchor
+      href={downloadUrl}
+      download={`${title}.png`}
+      variant="quiet"
+      icon={<Download aria-hidden="true" />}
+    >
+      {t('editor.download')}
+    </ButtonAnchor>
+  );
 
   return (
     <div className={styles.page}>
@@ -128,7 +167,16 @@ export function EditorPage() {
         </ButtonLink>
         <h1 className={styles.title}>{title}</h1>
         <StepBar step={progress.current_step} finished={progress.finished} />
+        <Button
+          variant="secondary"
+          className={styles.help}
+          icon={<CircleHelp aria-hidden="true" />}
+          onClick={() => setHelpOpen(true)}
+        >
+          {t('editor.help')}
+        </Button>
       </header>
+      <HelpDialog open={helpOpen} onClose={() => setHelpOpen(false)} />
 
       <LayoutGroup>
         <div className={chatOpen ? `${styles.workspace} ${styles.withChat}` : styles.workspace}>
@@ -144,8 +192,9 @@ export function EditorPage() {
                 />
               </div>
             ) : (
-              <motion.div layout="position" className={styles.photo}>
+              <motion.div layout="position" className={styles.photo} aria-busy={working}>
                 <PhotoCanvas frame={editor.frame} label={t('editor.photoAlt', { title })} />
+                {working && <WorkingNote text={t('editor.working')} />}
               </motion.div>
             )}
 
@@ -153,17 +202,12 @@ export function EditorPage() {
 
             {!showFinish && (
               <motion.div layout="position" className={styles.tools}>
-                <CommandTiles current={lessonCommand} disabled={busy} onCommand={pressTile} />
-                {downloadUrl && (
-                  <ButtonAnchor
-                    href={downloadUrl}
-                    download={`${title}.png`}
-                    variant="secondary"
-                    icon={<Download aria-hidden="true" />}
-                  >
-                    {t('editor.download')}
-                  </ButtonAnchor>
-                )}
+                <CommandTiles
+                  current={lessonCommand}
+                  disabled={busy}
+                  onCommand={pressTile}
+                  extra={download}
+                />
               </motion.div>
             )}
           </motion.section>

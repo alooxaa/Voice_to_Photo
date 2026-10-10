@@ -1,4 +1,5 @@
-"""Download the free Vosk speech models into backend/models_stt/.
+"""Download the free offline models: Vosk speech models into backend/models_stt/
+and the rembg background-removal model into backend/models_ai/.
 
 Run from the project root:
 
@@ -59,6 +60,19 @@ def download_model(name: str, target: Path) -> None:
     print(f"{name}: ready")
 
 
+def download_background_model(name: str, target: Path) -> None:
+    """rembg downloads its own weights (with a progress bar) into U2NET_HOME."""
+    if (target / "models" / name / f"{name}.onnx").is_file():
+        print(f"rembg {name}: already present, skipped")
+        return
+    print(f"rembg {name}: downloading")
+    os.environ["U2NET_HOME"] = str(target)
+    from rembg import new_session  # heavy import, only needed here
+
+    new_session(name)
+    print(f"rembg {name}: ready")
+
+
 def main() -> None:
     load_dotenv(BACKEND_DIR.parent / ".env")
     target = Path(os.getenv("VOSK_MODELS_DIR") or BACKEND_DIR / "models_stt")
@@ -66,6 +80,10 @@ def main() -> None:
     print(f"Models folder: {target}")
     for name in MODEL_NAMES.values():
         download_model(name, target)
+
+    ai_target = Path(os.getenv("REMBG_MODELS_DIR") or BACKEND_DIR / "models_ai")
+    ai_target.mkdir(parents=True, exist_ok=True)
+    download_background_model(os.getenv("REMBG_MODEL", "u2net"), ai_target)
 
 
 if __name__ == "__main__":

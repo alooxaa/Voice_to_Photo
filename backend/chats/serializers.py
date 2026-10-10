@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from speech.commands import COMMAND_IDS
+from speech.vocabulary import COMMAND_IDS
 
 from .models import ChatMessage, LessonProgress
 

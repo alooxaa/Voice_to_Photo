@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { matchCommand, normalize } from './matchCommand';
+import vocabulary from '../../../../shared/commands.json';
+import { matchCommand, matchIntensity, normalize } from './matchCommand';
 import { MAX_MS, SILENCE_MS, SilenceDetector } from './silence';
 import { downsample, encodeWav } from './wav';
 
@@ -19,6 +20,29 @@ describe('matchCommand', () => {
   it('prefers the longest phrase', () => {
     expect(matchCommand('артқа қайтар', 'kk')).toBe('undo');
     expect(matchCommand('make it darker', 'en')).toBe('darken');
+  });
+
+  it('understands every phrase of the shared vocabulary as its own command', () => {
+    for (const language of ['kk', 'ru', 'en'] as const) {
+      for (const [id, entry] of Object.entries(vocabulary.commands)) {
+        for (const phrase of entry[language].say) expect(matchCommand(phrase, language)).toBe(id);
+      }
+    }
+  });
+
+  it('accepts part of a phrase when only one command uses those words', () => {
+    // Vosk sometimes drops the last word: "жарқын қыл" arrives as "жарқын".
+    expect(matchCommand('жарқын', 'kk')).toBe('brighten');
+    expect(matchCommand('сәл жарқын', 'kk')).toBe('brighten');
+    // "make it" belongs to many commands, so it alone means nothing.
+    expect(matchCommand('make it', 'en')).toBeNull();
+  });
+
+  it('hears "a little" and "a lot"', () => {
+    expect(matchIntensity('сәл жарық қыл', 'kk')).toBe('little');
+    expect(matchIntensity('очень темнее', 'ru')).toBe('lot');
+    expect(matchIntensity('much brighter', 'en')).toBe('lot');
+    expect(matchIntensity('brighter', 'en')).toBeNull();
   });
 
   it('matches whole words only', () => {

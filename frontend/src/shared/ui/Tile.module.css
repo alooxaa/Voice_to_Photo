@@ -3,9 +3,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   min-height: var(--tile-min);
-  padding: 14px 10px;
+  padding: 10px 8px;
   border: 2px solid var(--line);
   border-radius: var(--radius-tile);
   background: var(--surface);
@@ -24,8 +24,8 @@
 }
 
 .icon svg {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
 }
 
 .label {

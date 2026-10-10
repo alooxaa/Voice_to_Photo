@@ -14,7 +14,7 @@ class AssistantTests(SimpleTestCase):
     def test_correct_command_praises_and_gives_next_task(self):
         answer = reply("brighten", LessonState(), rng=self.rng)
         self.assertEqual([m.key for m in answer.messages], ["praise", "task"])
-        self.assertEqual(answer.messages[1].command, "darken")
+        self.assertEqual(answer.messages[1].command, "grayscale")
         self.assertEqual(answer.messages[1].params, {"step": 1})
         self.assertEqual(answer.state, LessonState(step=1))
 
@@ -33,7 +33,7 @@ class AssistantTests(SimpleTestCase):
     def test_missed_speech_gets_its_own_reply(self):
         answer = reply(None, LessonState(step=2), heard="", rng=self.rng)
         self.assertEqual(answer.messages[0].key, "retry_unclear")
-        self.assertEqual(answer.messages[0].params["expected"], "grayscale")
+        self.assertEqual(answer.messages[0].params["expected"], "rotate")
 
     def test_full_lesson_then_free_mode(self):
         state = LessonState()

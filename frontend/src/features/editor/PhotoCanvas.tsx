@@ -21,12 +21,16 @@ function BitmapCanvas({ bitmap, label }: { bitmap: Bitmap; label: string }) {
   return <canvas ref={canvas} className={styles.canvas} role="img" aria-label={label} />;
 }
 
+/** How far a new frame starts turned, so it visibly rotates into place. */
+const TURN: Partial<Record<string, number>> = { rotate: -90, rotate_left: 90 };
+
 /**
  * Shows the current frame. On every change the new picture cross-fades over
- * the old one; after "rotate" it also turns into place.
+ * the old one; after a rotation it also turns into place.
  */
 export function PhotoCanvas({ frame, label }: { frame: Frame; label: string }) {
-  const turning = frame.change === 'rotate';
+  const turn = (frame.change && TURN[frame.change]) ?? 0;
+  const turning = turn !== 0;
 
   return (
     <div className={styles.stage}>
@@ -34,7 +38,7 @@ export function PhotoCanvas({ frame, label }: { frame: Frame; label: string }) {
         <motion.div
           key={frame.version}
           className={styles.layer}
-          initial={{ opacity: 0, rotate: turning ? -90 : 0 }}
+          initial={{ opacity: 0, rotate: turn }}
           animate={{ opacity: 1, rotate: 0 }}
           exit={{ opacity: 0 }}
           transition={{ duration: turning ? 0.4 : 0.3, ease: 'easeOut' }}

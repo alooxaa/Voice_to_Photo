@@ -1,4 +1,6 @@
+/* Positioned, so hidden screen-reader labels inside are clipped by its scrolling too. */
 .list {
+  position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;

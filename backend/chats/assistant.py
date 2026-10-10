@@ -15,10 +15,17 @@ The templates live in `frontend/src/shared/i18n/*.json` under `assistant`.
 import random
 from dataclasses import dataclass, field
 
-LESSON_STEPS = ("brighten", "darken", "grayscale", "undo", "rotate", "save")
+from speech.vocabulary import GROUP_OF
 
-# Commands suggested in free mode when the child said something we did not understand.
-EXAMPLE_COMMANDS = ("brighten", "darken", "grayscale", "rotate")
+# One step from each group, so the lesson visits every kind of tool once.
+# The frontend shows the same steps (features/lesson/steps.ts).
+LESSON_STEPS = ("brighten", "grayscale", "rotate", "blur", "undo", "auto_enhance")
+
+# Commands suggested in free mode when the child said something we did not understand:
+# simple, instant edits that are easy to see.
+EXAMPLE_COMMANDS = tuple(
+    command for command, group in GROUP_OF.items() if group in {"light", "colour", "shape"}
+)
 
 
 @dataclass(frozen=True)

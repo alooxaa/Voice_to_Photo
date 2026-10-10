@@ -1,0 +1,1025 @@
+{
+  "groups": [
+    "light",
+    "colour",
+    "shape",
+    "effects",
+    "smart",
+    "control"
+  ],
+  "intensity": {
+    "kk": {
+      "little": [
+        "сәл",
+        "аздап",
+        "кішкене"
+      ],
+      "lot": [
+        "өте",
+        "қатты",
+        "көп"
+      ]
+    },
+    "ru": {
+      "little": [
+        "чуть",
+        "чуть чуть",
+        "немного",
+        "слегка"
+      ],
+      "lot": [
+        "очень",
+        "сильно",
+        "намного",
+        "гораздо"
+      ]
+    },
+    "en": {
+      "little": [
+        "a little",
+        "a bit",
+        "slightly"
+      ],
+      "lot": [
+        "much",
+        "a lot",
+        "very"
+      ]
+    }
+  },
+  "commands": {
+    "brighten": {
+      "group": "light",
+      "adjustable": true,
+      "kk": {
+        "label": "Жарық қыл",
+        "effect": "Фото жарығырақ болды.",
+        "say": [
+          "жарық қыл",
+          "жарқын қыл",
+          "ашық қыл",
+          "жарық"
+        ]
+      },
+      "ru": {
+        "label": "Сделай светлее",
+        "effect": "Фото стало светлее.",
+        "say": [
+          "сделай светлее",
+          "светлее",
+          "ярче",
+          "сделай ярче",
+          "добавь света"
+        ]
+      },
+      "en": {
+        "label": "Brighten",
+        "effect": "The photo is brighter now.",
+        "say": [
+          "brighten",
+          "brighter",
+          "make it brighter",
+          "more light",
+          "lighter"
+        ]
+      }
+    },
+    "darken": {
+      "group": "light",
+      "adjustable": true,
+      "kk": {
+        "label": "Қараңғы қыл",
+        "effect": "Фото қараңғырақ болды.",
+        "say": [
+          "қараңғы қыл",
+          "күңгірт қыл",
+          "қараңғы",
+          "күңгірт"
+        ]
+      },
+      "ru": {
+        "label": "Сделай темнее",
+        "effect": "Фото стало темнее.",
+        "say": [
+          "сделай темнее",
+          "темнее",
+          "потемнее",
+          "убавь свет"
+        ]
+      },
+      "en": {
+        "label": "Darken",
+        "effect": "The photo is darker now.",
+        "say": [
+          "darken",
+          "darker",
+          "make it darker",
+          "less light"
+        ]
+      }
+    },
+    "contrast_up": {
+      "group": "light",
+      "adjustable": true,
+      "kk": {
+        "label": "Контраст қос",
+        "effect": "Контраст күшейді.",
+        "say": [
+          "контраст қос",
+          "контрастты көбейт",
+          "контрастты күшейтіп жібер",
+          "контраст"
+        ]
+      },
+      "ru": {
+        "label": "Больше контраста",
+        "effect": "Контраста стало больше.",
+        "say": [
+          "больше контраста",
+          "добавь контраста",
+          "контраст",
+          "усиль контраст"
+        ]
+      },
+      "en": {
+        "label": "More contrast",
+        "effect": "The contrast is stronger now.",
+        "say": [
+          "more contrast",
+          "add contrast",
+          "increase contrast",
+          "stronger contrast"
+        ]
+      }
+    },
+    "contrast_down": {
+      "group": "light",
+      "adjustable": true,
+      "kk": {
+        "label": "Жұмсақ қыл",
+        "effect": "Контраст азайды.",
+        "say": [
+          "жұмсақ қыл",
+          "контрастты азайтып жібер",
+          "контрастты азайту",
+          "контрастты төмендетіп жібер"
+        ]
+      },
+      "ru": {
+        "label": "Меньше контраста",
+        "effect": "Контраста стало меньше.",
+        "say": [
+          "меньше контраста",
+          "убавь контраст",
+          "мягче",
+          "сделай мягче"
+        ]
+      },
+      "en": {
+        "label": "Less contrast",
+        "effect": "The contrast is softer now.",
+        "say": [
+          "less contrast",
+          "reduce contrast",
+          "softer",
+          "make it softer"
+        ]
+      }
+    },
+    "saturate": {
+      "group": "colour",
+      "adjustable": true,
+      "kk": {
+        "label": "Түсін көбейт",
+        "effect": "Түстер жарқырай түсті.",
+        "say": [
+          "түсін көбейт",
+          "түсті қыл",
+          "түрлі түсті қыл",
+          "түсін күшейтіп жібер"
+        ]
+      },
+      "ru": {
+        "label": "Ярче цвета",
+        "effect": "Цвета стали ярче.",
+        "say": [
+          "ярче цвета",
+          "сочнее",
+          "сделай сочнее",
+          "больше цвета"
+        ]
+      },
+      "en": {
+        "label": "More colour",
+        "effect": "The colours are stronger now.",
+        "say": [
+          "more color",
+          "more colorful",
+          "make it colorful",
+          "stronger colors"
+        ]
+      }
+    },
+    "desaturate": {
+      "group": "colour",
+      "adjustable": true,
+      "kk": {
+        "label": "Солғын қыл",
+        "effect": "Түстер солғын тартты.",
+        "say": [
+          "солғын қыл",
+          "түсін азайтып жібер",
+          "түсті азайту",
+          "бозғылт қыл"
+        ]
+      },
+      "ru": {
+        "label": "Бледнее",
+        "effect": "Цвета стали спокойнее.",
+        "say": [
+          "бледнее",
+          "сделай бледнее",
+          "меньше цвета",
+          "приглуши цвета"
+        ]
+      },
+      "en": {
+        "label": "Less colour",
+        "effect": "The colours are softer now.",
+        "say": [
+          "less color",
+          "less colorful",
+          "paler",
+          "fade the colors"
+        ]
+      }
+    },
+    "grayscale": {
+      "group": "colour",
+      "kk": {
+        "label": "Ақ-қара",
+        "effect": "Енді фото ақ-қара.",
+        "say": [
+          "ақ қара",
+          "ақ қара қыл",
+          "түссіз қыл",
+          "сұр қыл"
+        ]
+      },
+      "ru": {
+        "label": "Чёрно-белое",
+        "effect": "Теперь фото чёрно-белое.",
+        "say": [
+          "черно белое",
+          "сделай черно белым",
+          "без цвета",
+          "убери цвет",
+          "серое"
+        ]
+      },
+      "en": {
+        "label": "Black and white",
+        "effect": "The photo is black and white now.",
+        "say": [
+          "black and white",
+          "grayscale",
+          "gray",
+          "no color",
+          "make it gray"
+        ]
+      }
+    },
+    "sepia": {
+      "group": "colour",
+      "kk": {
+        "label": "Ескі фото",
+        "effect": "Фото ескі суреттей болды.",
+        "say": [
+          "ескі фото",
+          "ескі фото қыл",
+          "ескі қыл",
+          "көне қыл"
+        ]
+      },
+      "ru": {
+        "label": "Старое фото",
+        "effect": "Фото стало похоже на старинное.",
+        "say": [
+          "старое фото",
+          "как старое фото",
+          "сделай старым",
+          "сепия"
+        ]
+      },
+      "en": {
+        "label": "Old photo",
+        "effect": "It looks like an old photo now.",
+        "say": [
+          "old photo",
+          "make it old",
+          "old style",
+          "sepia"
+        ]
+      }
+    },
+    "warmer": {
+      "group": "colour",
+      "adjustable": true,
+      "kk": {
+        "label": "Жылы қыл",
+        "effect": "Түстер жылырақ болды.",
+        "say": [
+          "жылы қыл",
+          "жылырақ қыл",
+          "жылытып жібер",
+          "жылы"
+        ]
+      },
+      "ru": {
+        "label": "Теплее",
+        "effect": "Цвета стали теплее.",
+        "say": [
+          "теплее",
+          "сделай теплее",
+          "потеплее",
+          "тёплые цвета"
+        ]
+      },
+      "en": {
+        "label": "Warmer",
+        "effect": "The colours are warmer now.",
+        "say": [
+          "warmer",
+          "make it warmer",
+          "warm colors",
+          "warm"
+        ]
+      }
+    },
+    "cooler": {
+      "group": "colour",
+      "adjustable": true,
+      "kk": {
+        "label": "Салқын қыл",
+        "effect": "Түстер салқынырақ болды.",
+        "say": [
+          "салқын қыл",
+          "суық қыл",
+          "салқындатып жібер",
+          "салқын"
+        ]
+      },
+      "ru": {
+        "label": "Холоднее",
+        "effect": "Цвета стали холоднее.",
+        "say": [
+          "холоднее",
+          "сделай холоднее",
+          "похолоднее",
+          "холодные цвета"
+        ]
+      },
+      "en": {
+        "label": "Cooler",
+        "effect": "The colours are cooler now.",
+        "say": [
+          "cooler",
+          "make it cooler",
+          "colder",
+          "cold colors"
+        ]
+      }
+    },
+    "invert": {
+      "group": "colour",
+      "kk": {
+        "label": "Түсін аудар",
+        "effect": "Түстер керісінше болды.",
+        "say": [
+          "түсін аудар",
+          "түстерді аудар",
+          "керісінше қыл",
+          "негатив"
+        ]
+      },
+      "ru": {
+        "label": "Негатив",
+        "effect": "Цвета поменялись на противоположные.",
+        "say": [
+          "негатив",
+          "сделай негатив",
+          "обрати цвета",
+          "наоборот"
+        ]
+      },
+      "en": {
+        "label": "Invert colours",
+        "effect": "The colours are flipped now.",
+        "say": [
+          "invert",
+          "invert colors",
+          "negative",
+          "opposite colors"
+        ]
+      }
+    },
+    "rotate": {
+      "group": "shape",
+      "kk": {
+        "label": "Оңға бұр",
+        "effect": "Фото оңға бұрылды.",
+        "say": [
+          "оңға бұр",
+          "бұр",
+          "бұрып жібер",
+          "айналдыр"
+        ]
+      },
+      "ru": {
+        "label": "Поверни вправо",
+        "effect": "Фото повернулось вправо.",
+        "say": [
+          "поверни",
+          "повернуть",
+          "поверни направо",
+          "поверни вправо",
+          "разверни"
+        ]
+      },
+      "en": {
+        "label": "Rotate right",
+        "effect": "The photo turned right.",
+        "say": [
+          "rotate",
+          "rotate right",
+          "turn",
+          "turn it",
+          "turn right"
+        ]
+      }
+    },
+    "rotate_left": {
+      "group": "shape",
+      "kk": {
+        "label": "Солға бұр",
+        "effect": "Фото солға бұрылды.",
+        "say": [
+          "солға бұр",
+          "солға айналдыр",
+          "сол жаққа бұр",
+          "солға"
+        ]
+      },
+      "ru": {
+        "label": "Поверни влево",
+        "effect": "Фото повернулось влево.",
+        "say": [
+          "поверни влево",
+          "поверни налево",
+          "налево",
+          "влево"
+        ]
+      },
+      "en": {
+        "label": "Rotate left",
+        "effect": "The photo turned left.",
+        "say": [
+          "rotate left",
+          "turn left",
+          "turn it left",
+          "left"
+        ]
+      }
+    },
+    "flip_horizontal": {
+      "group": "shape",
+      "kk": {
+        "label": "Айнадай қыл",
+        "effect": "Фото айнадағыдай аударылды.",
+        "say": [
+          "айнадай қыл",
+          "айнадай",
+          "айна",
+          "оңды солға аудар"
+        ]
+      },
+      "ru": {
+        "label": "Как в зеркале",
+        "effect": "Фото отразилось, как в зеркале.",
+        "say": [
+          "как в зеркале",
+          "зеркало",
+          "отразить",
+          "зеркально"
+        ]
+      },
+      "en": {
+        "label": "Mirror",
+        "effect": "The photo is mirrored now.",
+        "say": [
+          "mirror",
+          "mirror it",
+          "flip",
+          "flip it",
+          "flip sideways"
+        ]
+      }
+    },
+    "flip_vertical": {
+      "group": "shape",
+      "kk": {
+        "label": "Төңкеріп қой",
+        "effect": "Фото төңкерілді.",
+        "say": [
+          "төңкеріп қой",
+          "төңкеріп жібер",
+          "басын төмен қыл",
+          "төмен аудар"
+        ]
+      },
+      "ru": {
+        "label": "Вверх ногами",
+        "effect": "Фото перевернулось вверх ногами.",
+        "say": [
+          "вверх ногами",
+          "переверни",
+          "переверни вверх ногами",
+          "переверни фото"
+        ]
+      },
+      "en": {
+        "label": "Upside down",
+        "effect": "The photo is upside down now.",
+        "say": [
+          "upside down",
+          "flip upside down",
+          "turn upside down",
+          "flip it over"
+        ]
+      }
+    },
+    "crop_square": {
+      "group": "shape",
+      "kk": {
+        "label": "Шаршы қыл",
+        "effect": "Фото шаршы болды.",
+        "say": [
+          "шаршы қыл",
+          "шаршы",
+          "шаршы етіп кес",
+          "төртбұрыш қыл"
+        ]
+      },
+      "ru": {
+        "label": "Квадрат",
+        "effect": "Фото стало квадратным.",
+        "say": [
+          "квадрат",
+          "сделай квадрат",
+          "обрезать квадратом",
+          "квадратное"
+        ]
+      },
+      "en": {
+        "label": "Square",
+        "effect": "The photo is square now.",
+        "say": [
+          "square",
+          "make it square",
+          "crop square",
+          "crop it square"
+        ]
+      }
+    },
+    "zoom_in": {
+      "group": "shape",
+      "kk": {
+        "label": "Жақын қыл",
+        "effect": "Фото жақындады.",
+        "say": [
+          "жақын қыл",
+          "жақындатып жібер",
+          "үлкейтіп жібер",
+          "үлкен қыл"
+        ]
+      },
+      "ru": {
+        "label": "Приблизить",
+        "effect": "Фото стало ближе.",
+        "say": [
+          "приблизить",
+          "поближе",
+          "увеличь",
+          "крупнее"
+        ]
+      },
+      "en": {
+        "label": "Zoom in",
+        "effect": "We zoomed in.",
+        "say": [
+          "zoom in",
+          "zoom",
+          "closer",
+          "bigger",
+          "get closer"
+        ]
+      }
+    },
+    "blur": {
+      "group": "effects",
+      "adjustable": true,
+      "kk": {
+        "label": "Бұлдыр қыл",
+        "effect": "Фото бұлдыр болды.",
+        "say": [
+          "бұлдыр қыл",
+          "бұлдыр",
+          "бұлыңғыр қыл",
+          "анық емес қыл"
+        ]
+      },
+      "ru": {
+        "label": "Размыть",
+        "effect": "Фото стало размытым.",
+        "say": [
+          "размыть",
+          "сделай размытым",
+          "размытие",
+          "размытое"
+        ]
+      },
+      "en": {
+        "label": "Blur",
+        "effect": "The photo is blurry now.",
+        "say": [
+          "blur",
+          "blur it",
+          "blurry",
+          "make it blurry",
+          "fuzzy"
+        ]
+      }
+    },
+    "sharpen": {
+      "group": "effects",
+      "adjustable": true,
+      "kk": {
+        "label": "Анық қыл",
+        "effect": "Фото анығырақ болды.",
+        "say": [
+          "анық қыл",
+          "анығырақ қыл",
+          "айқын қыл",
+          "нақты қыл"
+        ]
+      },
+      "ru": {
+        "label": "Чётче",
+        "effect": "Фото стало чётче.",
+        "say": [
+          "чётче",
+          "сделай чётче",
+          "резче",
+          "сделай резче"
+        ]
+      },
+      "en": {
+        "label": "Sharpen",
+        "effect": "The photo is sharper now.",
+        "say": [
+          "sharpen",
+          "sharper",
+          "make it sharper",
+          "clearer"
+        ]
+      }
+    },
+    "vignette": {
+      "group": "effects",
+      "adjustable": true,
+      "kk": {
+        "label": "Шетін қараңғы қыл",
+        "effect": "Фотоның шеттері қараңғыланды.",
+        "say": [
+          "шетін қараңғы қыл",
+          "жиегін қараңғы қыл",
+          "шеттерін қараңғы қыл",
+          "шеттерін күңгірт қыл"
+        ]
+      },
+      "ru": {
+        "label": "Тёмные края",
+        "effect": "Края фото стали темнее.",
+        "say": [
+          "тёмные края",
+          "затемнить края",
+          "края темнее",
+          "виньетка"
+        ]
+      },
+      "en": {
+        "label": "Dark edges",
+        "effect": "The edges are darker now.",
+        "say": [
+          "dark edges",
+          "darker edges",
+          "darken the edges",
+          "vignette"
+        ]
+      }
+    },
+    "pixelate": {
+      "group": "effects",
+      "adjustable": true,
+      "kk": {
+        "label": "Пиксель қыл",
+        "effect": "Фото ойындағыдай пиксель болды.",
+        "say": [
+          "пиксель қыл",
+          "пиксель",
+          "ойындағыдай қыл",
+          "текше қыл"
+        ]
+      },
+      "ru": {
+        "label": "Пиксели",
+        "effect": "Фото стало как в компьютерной игре.",
+        "say": [
+          "пиксели",
+          "сделай пиксели",
+          "как в игре",
+          "пиксель"
+        ]
+      },
+      "en": {
+        "label": "Pixels",
+        "effect": "The photo looks like a video game now.",
+        "say": [
+          "pixels",
+          "pixelate",
+          "make it pixels",
+          "like a game",
+          "blocky"
+        ]
+      }
+    },
+    "remove_background": {
+      "group": "smart",
+      "kk": {
+        "label": "Фонды алып таста",
+        "effect": "Фон алынып тасталды.",
+        "say": [
+          "фонды алып таста",
+          "фонды өшір",
+          "артқы фонды алып таста",
+          "фонын алып таста"
+        ]
+      },
+      "ru": {
+        "label": "Убери фон",
+        "effect": "Фон убран.",
+        "say": [
+          "убери фон",
+          "удали фон",
+          "без фона",
+          "убрать фон"
+        ]
+      },
+      "en": {
+        "label": "Remove background",
+        "effect": "The background is gone.",
+        "say": [
+          "remove background",
+          "remove the background",
+          "no background",
+          "delete background"
+        ]
+      }
+    },
+    "auto_enhance": {
+      "group": "smart",
+      "kk": {
+        "label": "Әдемі қыл",
+        "effect": "Фото өзі жақсарды.",
+        "say": [
+          "әдемі қыл",
+          "жақсартып жібер",
+          "өзің жақсартып жібер",
+          "сұлу қыл"
+        ]
+      },
+      "ru": {
+        "label": "Сделай красиво",
+        "effect": "Фото стало лучше само.",
+        "say": [
+          "сделай красиво",
+          "улучшить",
+          "сделай лучше",
+          "улучшить фото"
+        ]
+      },
+      "en": {
+        "label": "Make it better",
+        "effect": "The photo got better by itself.",
+        "say": [
+          "make it better",
+          "make it nice",
+          "improve",
+          "enhance"
+        ]
+      }
+    },
+    "undo": {
+      "group": "control",
+      "kk": {
+        "label": "Артқа",
+        "effect": "Соңғы өзгерісті қайтардық.",
+        "say": [
+          "артқа",
+          "қайтар",
+          "артқа қайтар",
+          "болдырмау"
+        ]
+      },
+      "ru": {
+        "label": "Назад",
+        "effect": "Последнее изменение отменено.",
+        "say": [
+          "назад",
+          "отмени",
+          "отмена",
+          "верни как было"
+        ]
+      },
+      "en": {
+        "label": "Undo",
+        "effect": "The last change is undone.",
+        "say": [
+          "undo",
+          "go back",
+          "back",
+          "take it back"
+        ]
+      }
+    },
+    "redo": {
+      "group": "control",
+      "kk": {
+        "label": "Алға",
+        "effect": "Өзгерісті қайта жасадық.",
+        "say": [
+          "алға",
+          "қайтала",
+          "қайта жаса",
+          "алға қайтар"
+        ]
+      },
+      "ru": {
+        "label": "Вперёд",
+        "effect": "Изменение вернулось.",
+        "say": [
+          "вперёд",
+          "повтори",
+          "верни обратно",
+          "снова"
+        ]
+      },
+      "en": {
+        "label": "Redo",
+        "effect": "The change is back.",
+        "say": [
+          "redo",
+          "go forward",
+          "forward",
+          "do it again"
+        ]
+      }
+    },
+    "reset": {
+      "group": "control",
+      "kk": {
+        "label": "Басынан",
+        "effect": "Фото бастапқы қалпына келді.",
+        "say": [
+          "басынан",
+          "басынан баста",
+          "басынан бастау",
+          "қалпына келтір"
+        ]
+      },
+      "ru": {
+        "label": "Заново",
+        "effect": "Фото стало таким, как в начале.",
+        "say": [
+          "заново",
+          "начать заново",
+          "сначала",
+          "начни сначала"
+        ]
+      },
+      "en": {
+        "label": "Start over",
+        "effect": "The photo is back to how it started.",
+        "say": [
+          "start over",
+          "start again",
+          "reset",
+          "from the start"
+        ]
+      }
+    },
+    "save": {
+      "group": "control",
+      "kk": {
+        "label": "Сақта",
+        "effect": "Фото сақталды.",
+        "say": [
+          "сақта",
+          "сақтап қой",
+          "сақтау",
+          "сақтап ал"
+        ]
+      },
+      "ru": {
+        "label": "Сохрани",
+        "effect": "Фото сохранено.",
+        "say": [
+          "сохрани",
+          "сохранить",
+          "запомни",
+          "сохрани фото"
+        ]
+      },
+      "en": {
+        "label": "Save",
+        "effect": "The photo is saved.",
+        "say": [
+          "save",
+          "save it",
+          "save the photo",
+          "keep the photo"
+        ]
+      }
+    }
+  },
+  "choices": {
+    "keep": {
+      "kk": {
+        "label": "Қалдыр",
+        "say": [
+          "қалдыр",
+          "қалсын",
+          "иә",
+          "жақсы"
+        ]
+      },
+      "ru": {
+        "label": "Оставь",
+        "say": [
+          "оставь",
+          "оставить",
+          "да",
+          "хорошо"
+        ]
+      },
+      "en": {
+        "label": "Keep it",
+        "say": [
+          "keep",
+          "keep it",
+          "yes",
+          "good"
+        ]
+      }
+    },
+    "discard": {
+      "kk": {
+        "label": "Қайтар",
+        "say": [
+          "қайтар",
+          "жоқ",
+          "керек емес",
+          "қайтарып бер"
+        ]
+      },
+      "ru": {
+        "label": "Верни",
+        "say": [
+          "верни",
+          "нет",
+          "не надо",
+          "верни как было"
+        ]
+      },
+      "en": {
+        "label": "Go back",
+        "say": [
+          "go back",
+          "no",
+          "undo",
+          "no thanks"
+        ]
+      }
+    }
+  }
+}

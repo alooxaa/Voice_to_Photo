@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "photos",
     "chats",
     "speech",
+    "ai",
 ]
 
 MIDDLEWARE = [
@@ -127,3 +128,7 @@ CORS_ALLOWED_ORIGINS = env_list(
 )
 
 VOSK_MODELS_DIR = Path(os.getenv("VOSK_MODELS_DIR") or BASE_DIR / "models_stt")
+
+# Local background removal (rembg). "u2net" is its general-purpose model.
+REMBG_MODELS_DIR = Path(os.getenv("REMBG_MODELS_DIR") or BASE_DIR / "models_ai")
+REMBG_MODEL = os.getenv("REMBG_MODEL", "u2net")
