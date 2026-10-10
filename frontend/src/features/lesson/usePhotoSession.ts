@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { ApiError } from '../../shared/api/client';
-import { currentLanguage } from '../../shared/i18n';
 import { chatApi, type ChatMessage, type ChildRequest, type LessonProgress } from '../chat/api';
 import { photosApi, type Photo } from '../photos/api';
 
@@ -37,7 +36,7 @@ export function usePhotoSession(photoId: number) {
   /** Record what the child did and add the assistant's reply to the chat. */
   const send = useCallback(
     async (request: ChildRequest) => {
-      const reply = await chatApi.send(photoId, request, currentLanguage());
+      const reply = await chatApi.send(photoId, request);
       setMessages((old) => [...old, ...reply.messages]);
       setProgress(reply.progress);
       return reply;

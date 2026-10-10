@@ -8,6 +8,11 @@
   flex: none;
 }
 
+.compact {
+  width: calc(var(--mic-size) + 28px);
+  height: calc(var(--mic-size) + 28px);
+}
+
 .ring {
   position: absolute;
   border-radius: 50%;
@@ -21,6 +26,10 @@
 .inner {
   inset: 14px;
   background: var(--blue-ring-1);
+}
+
+.compact .inner {
+  inset: 7px;
 }
 
 .mic {

@@ -39,7 +39,6 @@ class MessageListView(APIView):
         answer = assistant.reply(
             command=data["command"],
             state=assistant.LessonState(progress.current_step, progress.finished),
-            lang=data["lang"],
             heard=data["text"],
         )
 
@@ -47,6 +46,7 @@ class MessageListView(APIView):
             ChatMessage.objects.create(
                 photo=photo,
                 role=ChatMessage.Role.CHILD,
+                key="tile" if data["source"] == "tile" else "",
                 text=data["text"],
                 command=data["command"],
             )
@@ -56,7 +56,8 @@ class MessageListView(APIView):
                 photo=photo,
                 role=ChatMessage.Role.ASSISTANT,
                 kind=message.kind,
-                text=message.text,
+                key=message.key,
+                params=message.params,
                 command=message.command,
             )
             for message in answer.messages

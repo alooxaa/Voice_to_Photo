@@ -87,3 +87,26 @@
 .main {
   min-width: 0;
 }
+
+/* Editor on a desktop screen: the shell is exactly one window high. */
+@media (min-width: 1024px) and (min-height: 600px) {
+  .fit {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .fit .header {
+    flex: none;
+    padding: 12px 0;
+  }
+
+  .fit .main {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    padding-bottom: 16px;
+  }
+}

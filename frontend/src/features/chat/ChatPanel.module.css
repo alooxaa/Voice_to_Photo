@@ -1,36 +1,33 @@
+/* The card fills its column; the message list takes whatever height is left. */
 .panel {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   height: 100%;
   min-height: 0;
-  padding: var(--pad);
+  padding: 20px;
   border-radius: var(--radius-card);
   background: var(--surface);
 }
 
 .header {
-  display: grid;
+  display: flex;
+  flex: none;
   gap: 14px;
-  padding-bottom: 16px;
+  align-items: center;
+  padding-bottom: 12px;
   border-bottom: 2px solid var(--ground);
 }
 
-.identity {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-}
-
 .thumb {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   object-fit: cover;
 }
 
 .title {
-  font-size: var(--text-card);
+  font-size: 22px;
 }
 
 .subtitle {
@@ -38,17 +35,8 @@
   font-size: 16px;
 }
 
-.free {
-  padding: 8px 12px;
-  border-radius: 12px;
-  background: var(--ground);
-  font-size: 16px;
-}
-
 .composer {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  padding-top: 12px;
+  flex: none;
+  padding-top: 8px;
   border-top: 2px solid var(--ground);
 }

@@ -1,7 +1,7 @@
 import { Images, Mic } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation, useMatch } from 'react-router-dom';
 
 import { useAuth } from '../features/auth/store';
 import { currentLanguage } from '../shared/i18n';
@@ -14,9 +14,11 @@ export function Layout() {
   const location = useLocation();
   const { profile, changeLanguage } = useAuth();
   const language = profile?.language ?? currentLanguage();
+  // The editor fits the window exactly on desktop: only its chat scrolls, never the page.
+  const fitWindow = useMatch('/photos/:id') !== null;
 
   return (
-    <div className={styles.shell}>
+    <div className={fitWindow ? `${styles.shell} ${styles.fit}` : styles.shell}>
       <header className={styles.header}>
         <Link to="/" className={styles.brand}>
           <span className={styles.mark} aria-hidden="true">

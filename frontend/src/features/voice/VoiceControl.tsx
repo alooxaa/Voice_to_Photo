@@ -25,6 +25,7 @@ export function VoiceControl({ status, heard, disabled, onToggle, layout }: Voic
         disabled={(disabled && !listening) || unavailable}
         label={listening ? t('voice.stop') : t('voice.start')}
         onPress={onToggle}
+        compact={layout === 'inline'}
       />
       <p className={styles.status} role="status" aria-live="polite">
         {t(`voice.${status}`, { text: heard })}

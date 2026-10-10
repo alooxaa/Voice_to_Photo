@@ -8,6 +8,8 @@ interface MicButtonProps {
   disabled?: boolean;
   label: string;
   onPress: () => void;
+  /** Thinner rings, for the chat composer where height is scarce. The button stays 112px. */
+  compact?: boolean;
 }
 
 const pulse = (delay: number) => ({
@@ -19,9 +21,15 @@ const pulse = (delay: number) => ({
  * The big round microphone. One press starts listening, a second press stops.
  * The two rings are its only "shadow"; they pulse while it listens.
  */
-export function MicButton({ listening, disabled = false, label, onPress }: MicButtonProps) {
+export function MicButton({
+  listening,
+  disabled = false,
+  label,
+  onPress,
+  compact = false,
+}: MicButtonProps) {
   return (
-    <div className={styles.wrap}>
+    <div className={compact ? `${styles.wrap} ${styles.compact}` : styles.wrap}>
       <motion.span
         className={`${styles.ring} ${styles.outer}`}
         aria-hidden="true"

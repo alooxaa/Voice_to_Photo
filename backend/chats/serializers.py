@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from speech.commands import COMMAND_IDS, LANGUAGES
+from speech.commands import COMMAND_IDS
 
 from .models import ChatMessage, LessonProgress
 
@@ -8,7 +8,7 @@ from .models import ChatMessage, LessonProgress
 class ChatMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatMessage
-        fields = ["id", "role", "kind", "text", "command", "created"]
+        fields = ["id", "role", "kind", "key", "params", "text", "command", "created"]
 
 
 class LessonProgressSerializer(serializers.ModelSerializer):
@@ -22,4 +22,5 @@ class ChildRequestSerializer(serializers.Serializer):
 
     text = serializers.CharField(max_length=200, allow_blank=True)
     command = serializers.ChoiceField(choices=COMMAND_IDS, allow_null=True)
-    lang = serializers.ChoiceField(choices=LANGUAGES)
+    # A pressed tile has no spoken words; its label is shown in the current language instead.
+    source = serializers.ChoiceField(choices=["voice", "tile"], default="voice")

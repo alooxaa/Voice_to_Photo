@@ -55,8 +55,7 @@
     "loading": "Opening the photo…",
     "photoAlt": "Photo “{{title}}”",
     "tiles": "Commands",
-    "download": "Download the photo",
-    "freeMode": "Free mode: say any command you like."
+    "download": "Download the photo"
   },
   "voice": {
     "start": "Start listening",
@@ -75,7 +74,8 @@
     "title": "This photo's chat",
     "messages": "Messages",
     "you": "You",
-    "assistant": "Helper"
+    "assistant": "Helper",
+    "notHeard": "(not heard)"
   },
   "lesson": {
     "taskLabel": "Task {{n}}",
@@ -108,27 +108,64 @@
   "commands": {
     "brighten": {
       "label": "Brighten",
-      "say": ["brighten", "brighter", "make it brighter", "more light", "lighter"]
+      "say": ["brighten", "brighter", "make it brighter", "more light", "lighter"],
+      "effect": "The photo is brighter now."
     },
     "darken": {
       "label": "Darken",
-      "say": ["darken", "darker", "make it darker", "less light"]
+      "say": ["darken", "darker", "make it darker", "less light"],
+      "effect": "The photo is darker now."
     },
     "grayscale": {
       "label": "Black and white",
-      "say": ["black and white", "grayscale", "gray", "no color", "make it gray"]
+      "say": ["black and white", "grayscale", "gray", "no color", "make it gray"],
+      "effect": "The photo is black and white now."
     },
     "rotate": {
       "label": "Rotate",
-      "say": ["rotate", "turn", "turn it", "turn right", "spin"]
+      "say": ["rotate", "turn", "turn it", "turn right", "spin"],
+      "effect": "The photo has turned."
     },
     "undo": {
       "label": "Undo",
-      "say": ["undo", "go back", "back", "take it back"]
+      "say": ["undo", "go back", "back", "take it back"],
+      "effect": "The last change is undone."
     },
     "save": {
       "label": "Save",
-      "say": ["save", "save it", "keep it", "save the photo"]
+      "say": ["save", "save it", "keep it", "save the photo"],
+      "effect": "The photo is saved."
     }
+  },
+  "samples": {
+    "mountains": "Mountains",
+    "sea": "Sea",
+    "city": "City"
+  },
+  "assistant": {
+    "praise": ["Great job!", "Well done!", "Nice!", "You did it!"],
+    "other_command": [
+      "{{effect}} Now let's go back to the task.",
+      "{{effect}} Good! Now try this task."
+    ],
+    "retry_heard": [
+      "I heard “{{heard}}”, which isn't a command. Try saying “{{label}}”.",
+      "That sounded like “{{heard}}”. Let's try “{{label}}”."
+    ],
+    "retry_unclear": [
+      "I couldn't make out the words. Press the microphone and slowly say “{{label}}”.",
+      "I didn't catch any words this time. Let's try “{{label}}” once more."
+    ],
+    "free_retry_heard": [
+      "I heard “{{heard}}”, which isn't a command. Try {{examples}}.",
+      "That sounded like “{{heard}}”. Say {{examples}} and the photo will change."
+    ],
+    "free_retry_unclear": [
+      "I couldn't make out the words. Try {{examples}}.",
+      "I didn't catch any words this time. Let's try {{examples}}."
+    ],
+    "finished": "You finished every task! Free mode is on: you can use any command now.",
+    "or": "or",
+    "quote": "“{{label}}”"
   }
 }

@@ -1,11 +1,22 @@
 import { api } from '../../shared/api/client';
-import type { Language } from '../../shared/i18n';
 import type { CommandId } from '../editor/commands';
+
+/** Values the assistant's reply templates are filled with (see chats/assistant.py). */
+export interface MessageParams {
+  step?: number;
+  heard?: string;
+  expected?: CommandId;
+  examples?: CommandId[];
+}
 
 export interface ChatMessage {
   id: number;
   role: 'child' | 'assistant';
   kind: 'text' | 'task' | 'praise' | 'retry';
+  /** Template of an assistant reply; empty for the child's own words. */
+  key: string;
+  params: MessageParams;
+  /** The child's words as heard; empty when speech was caught but not understood. */
   text: string;
   command: CommandId | null;
   created: string;
@@ -17,9 +28,10 @@ export interface LessonProgress {
 }
 
 export interface ChildRequest {
-  /** What was heard, or the tile's label when a tile was pressed. */
+  /** What was heard; empty for a tile press or speech that was not understood. */
   text: string;
   command: CommandId | null;
+  source?: 'voice' | 'tile';
 }
 
 export const chatApi = {
@@ -28,9 +40,9 @@ export const chatApi = {
   progress: (photoId: number) => api<LessonProgress>(`photos/${photoId}/progress/`),
 
   /** Record what the child did; the backend answers with the assistant's reply. */
-  send: (photoId: number, request: ChildRequest, lang: Language) =>
+  send: (photoId: number, request: ChildRequest) =>
     api<{ messages: ChatMessage[]; progress: LessonProgress }>(`photos/${photoId}/messages/`, {
       method: 'POST',
-      body: { ...request, lang },
+      body: { ...request },
     }),
 };

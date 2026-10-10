@@ -96,7 +96,7 @@ def create_sample_photos(user, language: str = "kk") -> list[Photo]:
     for key, draw in SCENES.items():
         buffer = io.BytesIO()
         draw().save(buffer, format="JPEG", quality=90)
-        photo = Photo(owner=user, title=titles[key])
+        photo = Photo(owner=user, title=titles[key], title_key=key)
         photo.original.save(f"{key}.jpg", ContentFile(buffer.getvalue()), save=False)
         photo.save()
         photos.append(photo)

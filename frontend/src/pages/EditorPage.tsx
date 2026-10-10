@@ -6,15 +6,18 @@ import { useParams } from 'react-router-dom';
 
 import { ChatPanel } from '../features/chat/ChatPanel';
 import type { ChildRequest } from '../features/chat/api';
+import { messageText } from '../features/chat/messageText';
 import { CommandTiles } from '../features/editor/CommandTiles';
 import type { CommandId } from '../features/editor/commands';
 import { PhotoCanvas } from '../features/editor/PhotoCanvas';
 import { bitmapToBlob, useEditor } from '../features/editor/useEditor';
 import { FinishView } from '../features/lesson/FinishView';
+import { StepBar } from '../features/lesson/StepBar';
 import { LESSON_STEPS } from '../features/lesson/steps';
 import { TaskCard } from '../features/lesson/TaskCard';
 import { usePhotoSession } from '../features/lesson/usePhotoSession';
 import { latestImage, photosApi } from '../features/photos/api';
+import { photoTitle } from '../features/photos/title';
 import { speak } from '../features/voice/speak';
 import { useVoice } from '../features/voice/useVoice';
 import { VoiceControl } from '../features/voice/VoiceControl';
@@ -71,7 +74,7 @@ export function EditorPage() {
       const reply = await session.send(request);
       if (reply.progress.finished && !wasFinished) setShowFinish(true);
       const answer = reply.messages.filter((message) => message.role === 'assistant');
-      speak(answer.map((message) => message.text).join(' '), currentLanguage());
+      speak(answer.map((message) => messageText(message, t)).join(' '), currentLanguage());
     } catch {
       setProblem((current) => current ?? 'chat_failed');
     } finally {
@@ -83,7 +86,7 @@ export function EditorPage() {
 
   function pressTile(command: CommandId) {
     voice.reset();
-    void handleRequest({ text: t(`commands.${command}.label`), command });
+    void handleRequest({ text: '', command, source: 'tile' });
   }
 
   if (
@@ -104,6 +107,7 @@ export function EditorPage() {
     );
   }
 
+  const title = photoTitle(photo, t);
   const chatOpen = messages.length > 0;
   const lessonCommand = progress.finished ? null : LESSON_STEPS[progress.current_step];
   const voiceControl = (
@@ -118,35 +122,33 @@ export function EditorPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.top}>
+      <header className={styles.top}>
         <ButtonLink to="/" variant="quiet" icon={<ArrowLeft aria-hidden="true" />}>
           {t('nav.backToPhotos')}
         </ButtonLink>
-        <h1 className={styles.title}>{photo.title}</h1>
-      </div>
+        <h1 className={styles.title}>{title}</h1>
+        <StepBar step={progress.current_step} finished={progress.finished} />
+      </header>
 
       <LayoutGroup>
         <div className={chatOpen ? `${styles.workspace} ${styles.withChat}` : styles.workspace}>
           <motion.section layout transition={layoutTransition} className={styles.stage}>
             {showFinish ? (
-              <FinishView
-                originalUrl={photo.original_url}
-                frame={editor.frame}
-                busy={busy}
-                onSave={() => pressTile('save')}
-                onContinue={() => setShowFinish(false)}
-              />
+              <div className={styles.finish}>
+                <FinishView
+                  originalUrl={photo.original_url}
+                  frame={editor.frame}
+                  busy={busy}
+                  onSave={() => pressTile('save')}
+                  onContinue={() => setShowFinish(false)}
+                />
+              </div>
             ) : (
               <motion.div layout="position" className={styles.photo}>
-                <PhotoCanvas
-                  frame={editor.frame}
-                  label={t('editor.photoAlt', { title: photo.title })}
-                />
+                <PhotoCanvas frame={editor.frame} label={t('editor.photoAlt', { title })} />
               </motion.div>
             )}
 
-            {!chatOpen && lessonCommand && <TaskCard command={lessonCommand} />}
-            {!chatOpen && voiceControl}
             {problem && <Notice>{t(`errors.${problem}`)}</Notice>}
 
             {!showFinish && (
@@ -155,7 +157,7 @@ export function EditorPage() {
                 {downloadUrl && (
                   <ButtonAnchor
                     href={downloadUrl}
-                    download={`${photo.title}.png`}
+                    download={`${title}.png`}
                     variant="secondary"
                     icon={<Download aria-hidden="true" />}
                   >
@@ -166,24 +168,39 @@ export function EditorPage() {
             )}
           </motion.section>
 
-          <AnimatePresence>
-            {chatOpen && (
-              <motion.aside
-                className={styles.chat}
-                initial={{ opacity: 0, x: 48 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={layoutTransition}
-              >
-                <ChatPanel
-                  title={photo.title}
-                  thumbnailUrl={photo.original_url}
-                  messages={messages}
-                  progress={progress}
-                  composer={voiceControl}
-                />
-              </motion.aside>
-            )}
-          </AnimatePresence>
+          {/* The right column always holds the microphone, so it never moves or scrolls away. */}
+          <motion.aside layout transition={layoutTransition} className={styles.side}>
+            <AnimatePresence mode="wait" initial={false}>
+              {chatOpen ? (
+                <motion.div
+                  key="chat"
+                  className={styles.sideContent}
+                  initial={{ opacity: 0, x: 48 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={layoutTransition}
+                >
+                  <ChatPanel
+                    title={title}
+                    thumbnailUrl={photo.original_url}
+                    messages={messages}
+                    composer={voiceControl}
+                  />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="intro"
+                  className={`${styles.sideContent} ${styles.intro}`}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
+                >
+                  {lessonCommand && (
+                    <TaskCard command={lessonCommand} step={progress.current_step} />
+                  )}
+                  {voiceControl}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.aside>
         </div>
       </LayoutGroup>
     </div>

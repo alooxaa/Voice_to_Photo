@@ -3,6 +3,8 @@ import { api } from '../../shared/api/client';
 export interface Photo {
   id: number;
   title: string;
+  /** "mountains", "sea" or "city" for sample photos, empty for uploads. */
+  title_key: string;
   original_url: string;
   edited_url: string | null;
   has_chat: boolean;

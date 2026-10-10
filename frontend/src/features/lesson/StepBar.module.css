@@ -1,6 +1,9 @@
+/* Sits in the editor header next to the photo title. It is not clickable. */
 .wrap {
-  display: grid;
-  gap: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  align-items: center;
 }
 
 .bar {
@@ -13,9 +16,8 @@
 
 .step {
   display: grid;
-  flex: 1;
   place-items: center;
-  min-width: 28px;
+  width: 36px;
   height: 32px;
   border: 2px solid var(--line);
   border-radius: 10px;

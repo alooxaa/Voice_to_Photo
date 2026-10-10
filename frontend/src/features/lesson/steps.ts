@@ -9,8 +9,3 @@ export const LESSON_STEPS: readonly CommandId[] = [
   'rotate',
   'save',
 ];
-
-/** Task number shown to the child ("1-тапсырма"), counting from 1. */
-export function taskNumber(command: CommandId): number {
-  return LESSON_STEPS.indexOf(command) + 1;
-}

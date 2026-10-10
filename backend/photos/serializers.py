@@ -18,7 +18,16 @@ class PhotoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Photo
-        fields = ["id", "title", "original_url", "edited_url", "has_chat", "created", "updated"]
+        fields = [
+            "id",
+            "title",
+            "title_key",
+            "original_url",
+            "edited_url",
+            "has_chat",
+            "created",
+            "updated",
+        ]
 
     # Relative URLs work through the Vite proxy and do not depend on the host name.
     def get_original_url(self, photo: Photo) -> str:
