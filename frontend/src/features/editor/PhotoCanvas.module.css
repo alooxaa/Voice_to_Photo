@@ -1,0 +1,22 @@
+/* All frames share one grid cell, so the old and new picture overlap while fading. */
+.stage {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 240px;
+}
+
+.layer {
+  grid-area: 1 / 1;
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+
+.canvas {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: var(--photo-max-height, 56vh);
+  border-radius: 20px;
+}
