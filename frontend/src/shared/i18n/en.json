@@ -1,0 +1,134 @@
+{
+  "app": {
+    "name": "Dauys-Foto",
+    "tagline": "Learn photo editing with your voice"
+  },
+  "nav": {
+    "main": "Main menu",
+    "photos": "My photos",
+    "profile": "Profile",
+    "backToPhotos": "Back to my photos"
+  },
+  "language": {
+    "label": "Language"
+  },
+  "auth": {
+    "loginTitle": "Log in",
+    "loginLead": "Log in to get back to your photos.",
+    "registerTitle": "Sign up",
+    "registerLead": "Tell us your name, then pick a username and a password.",
+    "displayName": "Your name",
+    "username": "Username",
+    "password": "Password",
+    "passwordRepeat": "Password again",
+    "loginButton": "Log in",
+    "registerButton": "Sign up",
+    "toRegister": "New here? Sign up",
+    "toLogin": "Already have an account? Log in",
+    "working": "One moment…"
+  },
+  "errors": {
+    "required": "Please fill this in.",
+    "username_taken": "That username is taken. Try another one.",
+    "username_invalid": "Use only letters, numbers, dots or dashes in the username.",
+    "passwords_differ": "The passwords don't match. Try once more.",
+    "password_short": "The password needs at least 6 characters.",
+    "login_failed": "The username or password didn't match. Check them and try again.",
+    "network": "Couldn't reach the server. Check that the backend is running.",
+    "upload_failed": "That file couldn't be uploaded. Try a different picture.",
+    "save_failed": "The photo wasn't saved on the server, but you can still download it.",
+    "chat_failed": "The chat message didn't go through. The change to the photo is kept.",
+    "photo_missing": "This photo couldn't be found.",
+    "generic": "Something went wrong. Please try again."
+  },
+  "home": {
+    "greeting": "Hi, {{name}}!",
+    "title": "My photos",
+    "lead": "Pick a photo and change it with your voice.",
+    "upload": "Upload your own photo",
+    "uploading": "Uploading…",
+    "hasChat": "Has a chat",
+    "open": "Open the photo “{{title}}”",
+    "loading": "Loading your photos…"
+  },
+  "editor": {
+    "loading": "Opening the photo…",
+    "photoAlt": "Photo “{{title}}”",
+    "tiles": "Commands",
+    "download": "Download the photo",
+    "freeMode": "Free mode: say any command you like."
+  },
+  "voice": {
+    "start": "Start listening",
+    "stop": "Stop listening",
+    "idle": "Press the microphone and say a command",
+    "listening": "Listening…",
+    "processing": "Working it out…",
+    "heard": "Heard: “{{text}}”",
+    "unclear": "I couldn't catch a command. Please say it again.",
+    "noSpeech": "No voice came through. Press the microphone and try again.",
+    "micBlocked": "The microphone is blocked. Allow it in the browser, or use the buttons below.",
+    "offline": "Speech recognition isn't available right now. The buttons below still work.",
+    "unsupported": "This browser can't use the microphone. Use the buttons below."
+  },
+  "chat": {
+    "title": "This photo's chat",
+    "messages": "Messages",
+    "you": "You",
+    "assistant": "Helper"
+  },
+  "lesson": {
+    "taskLabel": "Task {{n}}",
+    "task": "Say “{{label}}”",
+    "listen": "Listen to the task",
+    "progress": "Lesson progress",
+    "step": "Step {{n}} of {{total}}"
+  },
+  "finish": {
+    "title": "Hooray! You finished every task.",
+    "before": "Before",
+    "after": "After",
+    "words": "Words you learned",
+    "save": "Save the photo",
+    "another": "Edit another photo",
+    "continue": "Keep editing this photo"
+  },
+  "profile": {
+    "title": "Profile",
+    "username": "Username: {{username}}",
+    "language": "Language",
+    "avatar": "Avatar colour",
+    "logout": "Log out",
+    "colors": {
+      "blue": "Blue",
+      "sun": "Yellow",
+      "ink": "Navy"
+    }
+  },
+  "commands": {
+    "brighten": {
+      "label": "Brighten",
+      "say": ["brighten", "brighter", "make it brighter", "more light", "lighter"]
+    },
+    "darken": {
+      "label": "Darken",
+      "say": ["darken", "darker", "make it darker", "less light"]
+    },
+    "grayscale": {
+      "label": "Black and white",
+      "say": ["black and white", "grayscale", "gray", "no color", "make it gray"]
+    },
+    "rotate": {
+      "label": "Rotate",
+      "say": ["rotate", "turn", "turn it", "turn right", "spin"]
+    },
+    "undo": {
+      "label": "Undo",
+      "say": ["undo", "go back", "back", "take it back"]
+    },
+    "save": {
+      "label": "Save",
+      "say": ["save", "save it", "keep it", "save the photo"]
+    }
+  }
+}

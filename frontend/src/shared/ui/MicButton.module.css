@@ -1,0 +1,46 @@
+/* The wrapper reserves room for the rings so they never cover other targets. */
+.wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: calc(var(--mic-size) + 56px);
+  height: calc(var(--mic-size) + 56px);
+  flex: none;
+}
+
+.ring {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.outer {
+  inset: 0;
+  background: var(--blue-ring-2);
+}
+
+.inner {
+  inset: 14px;
+  background: var(--blue-ring-1);
+}
+
+.mic {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--mic-size);
+  height: var(--mic-size);
+  border: none;
+  border-radius: 50%;
+  background: var(--blue);
+  color: var(--surface);
+}
+
+.mic:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.mic svg {
+  width: 44px;
+  height: 44px;
+}

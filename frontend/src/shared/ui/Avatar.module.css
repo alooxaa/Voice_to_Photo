@@ -1,0 +1,35 @@
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  border-radius: 50%;
+  font-family: var(--font-serif);
+  font-weight: 600;
+}
+
+.small {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+}
+
+.large {
+  width: 96px;
+  height: 96px;
+  font-size: 44px;
+}
+
+.blue {
+  background: var(--blue);
+  color: var(--surface);
+}
+
+.sun {
+  background: var(--sun);
+  color: var(--ink);
+}
+
+.ink {
+  background: var(--ink);
+  color: var(--surface);
+}

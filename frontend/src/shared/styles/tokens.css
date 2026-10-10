@@ -1,0 +1,36 @@
+/* Design tokens. These are the only colours the interface may use. */
+:root {
+  --ground: #eaf0fb;
+  --surface: #ffffff;
+  --ink: #16203a;
+  --ink-soft: #3c4a6b;
+  --line: #9aa8c7;
+  --blue: #2450d8;
+  --blue-ring-1: #c9d6f8;
+  --blue-ring-2: #e3eafb;
+  --sun: #ffc53d;
+
+  --font-serif: 'Source Serif 4', Georgia, serif;
+  --font-sans: 'Golos Text', system-ui, sans-serif;
+
+  --text-body: 20px;
+  --text-secondary: 18px;
+  --text-card: 24px;
+  --text-task: 28px;
+  --text-headline: clamp(40px, 5vw, 56px);
+
+  --radius-card: 28px;
+  --radius-tile: 20px;
+  --radius-button: 16px;
+  --gap: 20px;
+  --pad: 24px;
+
+  /* Dyspraxia rules: large targets with generous spacing. */
+  --target-min: 56px;
+  --tile-min: 96px;
+  --mic-size: 112px;
+  --target-gap: 12px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration: 300ms;
+}

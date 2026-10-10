@@ -1,0 +1,17 @@
+.notice {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 16px 20px;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-button);
+  background: var(--surface);
+  font-size: var(--text-secondary);
+}
+
+.notice svg {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin-top: 2px;
+}
