@@ -130,8 +130,8 @@ browser sees one origin.
 ```powershell
 # Backend: auth, ownership isolation, assistant, speech endpoint (recogniser mocked)
 .\.venv\Scripts\python.exe backend\manage.py test accounts photos chats speech
-.\.venv\Scripts\ruff.exe check backend
-.\.venv\Scripts\ruff.exe format --check backend
+.\.venv\Scripts\python.exe -m ruff check backend
+.\.venv\Scripts\python.exe -m ruff format --check backend
 
 # Frontend: command matching, canvas engine, WAV encoding, silence detection
 npm --prefix frontend test
