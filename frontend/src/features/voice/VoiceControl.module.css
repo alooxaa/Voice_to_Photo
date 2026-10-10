@@ -1,0 +1,31 @@
+.control {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.stacked {
+  flex-direction: column;
+  text-align: center;
+}
+
+/* On narrow screens the status wraps below the microphone instead of overflowing. */
+.inline {
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.status {
+  flex: 1 1 160px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.stacked .status {
+  max-width: 28ch;
+}
