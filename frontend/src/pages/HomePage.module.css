@@ -1,0 +1,41 @@
+.page {
+  display: grid;
+  gap: 40px;
+  padding-bottom: 48px;
+}
+
+.intro {
+  display: grid;
+  gap: 10px;
+}
+
+.greeting {
+  font-size: var(--text-headline);
+}
+
+.lead {
+  color: var(--ink-soft);
+  font-size: 22px;
+}
+
+.section {
+  display: grid;
+  gap: 20px;
+}
+
+.title {
+  font-size: 32px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.grid > li {
+  display: grid;
+}

@@ -1,0 +1,84 @@
+.page {
+  display: grid;
+  gap: 20px;
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.title {
+  font-size: 36px;
+}
+
+.message {
+  display: grid;
+  justify-items: start;
+  gap: 16px;
+  padding: 40px 0;
+}
+
+/* Before the first request: one centred column, photo first. */
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 880px);
+  justify-content: center;
+  gap: var(--gap);
+}
+
+/* After the first request the chat takes the right side and the photo area shrinks. */
+.withChat {
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 460px);
+  align-items: start;
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap);
+  min-width: 0;
+}
+
+.photo {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: 16px;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+
+.withChat .photo {
+  --photo-max-height: 48vh;
+}
+
+.tools {
+  display: grid;
+  justify-items: start;
+  gap: var(--target-gap);
+  width: 100%;
+}
+
+.chat {
+  position: sticky;
+  top: 20px;
+  height: calc(100vh - 40px);
+  min-height: 520px;
+}
+
+/* Narrow screens: the chat goes below the photo. */
+@media (max-width: 1023px) {
+  .withChat {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .chat {
+    position: static;
+    height: auto;
+    min-height: 0;
+  }
+}
