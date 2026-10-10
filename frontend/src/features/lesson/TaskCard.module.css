@@ -1,0 +1,25 @@
+.card {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  width: 100%;
+  padding: var(--pad);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+
+.label {
+  padding: 4px 12px;
+  border-radius: 10px;
+  background: var(--sun);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.task {
+  font-family: var(--font-serif);
+  font-size: var(--text-task);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}

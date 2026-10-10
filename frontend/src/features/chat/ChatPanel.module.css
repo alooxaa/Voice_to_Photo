@@ -1,0 +1,54 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  min-height: 0;
+  padding: var(--pad);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+
+.header {
+  display: grid;
+  gap: 14px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--ground);
+}
+
+.identity {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.title {
+  font-size: var(--text-card);
+}
+
+.subtitle {
+  color: var(--ink-soft);
+  font-size: 16px;
+}
+
+.free {
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--ground);
+  font-size: 16px;
+}
+
+.composer {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 2px solid var(--ground);
+}

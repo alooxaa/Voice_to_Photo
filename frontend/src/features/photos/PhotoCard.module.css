@@ -1,0 +1,50 @@
+.card {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.thumb {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  border-radius: 20px;
+  object-fit: cover;
+  background: var(--ground);
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px 4px;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: var(--text-card);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.chat {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 10px;
+  background: var(--ground);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.chat svg {
+  width: 18px;
+  height: 18px;
+}

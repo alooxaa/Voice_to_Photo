@@ -1,0 +1,52 @@
+.wrap {
+  display: grid;
+  gap: 6px;
+}
+
+.bar {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  min-width: 28px;
+  height: 32px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color var(--duration) var(--ease-out);
+}
+
+.step svg {
+  width: 18px;
+  height: 18px;
+}
+
+.done {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: var(--surface);
+}
+
+.current {
+  border-color: var(--ink);
+  background: var(--sun);
+  color: var(--ink);
+}
+
+.todo {
+  background: var(--surface);
+  color: var(--ink-soft);
+}
+
+.caption {
+  color: var(--ink-soft);
+  font-size: 16px;
+}

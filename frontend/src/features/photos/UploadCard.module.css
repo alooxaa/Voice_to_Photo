@@ -1,0 +1,39 @@
+.card {
+  display: flex;
+  min-height: 280px;
+}
+
+.label {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  justify-content: center;
+  padding: var(--pad);
+  border: 3px dashed var(--line);
+  border-radius: var(--radius-card);
+  cursor: pointer;
+  font-family: var(--font-serif);
+  font-size: var(--text-card);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.label svg {
+  width: 48px;
+  height: 48px;
+  color: var(--blue);
+}
+
+/* The real input is hidden, so its keyboard focus is shown on the card. */
+.input:focus-visible + .label {
+  outline: 4px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.input:disabled + .label {
+  cursor: default;
+  opacity: 0.7;
+}
