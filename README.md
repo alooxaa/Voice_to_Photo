@@ -1,23 +1,20 @@
-# Dauys-Foto (Дауыс-фото)
+# Voice to Photo
 
-A voice user interface that teaches children with **dyspraxia** to use photo
-editing tools, from simple filters to generative AI. Dyspraxia makes small
-targets, dragging and precise clicks hard, while thinking is unaffected. So the
-app is driven by voice, and every action also has a very large button as a
-fallback.
-
-The interface, voice commands, speech recognition and spoken feedback work in
-**Kazakh (default), Russian and English**. Two modes:
-
-- **Өңдеу (Edit)**: 27 editing commands, all free and local. After the first
-  setup it works without internet.
-- **ЖИ шебері (AI Studio)**: the child describes a change or a new picture in
-  their own words, and a generative AI model draws it. This mode uses free
-  online services and needs keys (see [AI Studio](#ai-studio)).
+Voice to Photo is a voice-controlled photo editor that teaches children with
+dyspraxia to edit photos. Dyspraxia makes small targets, dragging and precise
+clicks hard, so every action can be spoken, and very large buttons are the
+fallback. It is built with React (Vite, TypeScript) and Django (REST
+Framework), and recognises speech in Kazakh, Russian and English with Vosk,
+fully offline after the first setup. An optional AI Studio mode adds
+generative editing through free online services.
 
 University HCI coursework project.
 
-![Screenshot of the editor with the chat open](docs/screenshot.png)
+## Screenshots
+
+| Home | Editor |
+|---|---|
+| ![My photos](docs/screenshots/home.png) | ![Editor with the chat open](docs/screenshots/editor.png) |
 
 ## What a child does
 
